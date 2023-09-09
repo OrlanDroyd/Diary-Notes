@@ -4,17 +4,18 @@ plugins {
     id("kotlin-kapt")
     id("dagger.hilt.android.plugin")
     id("io.realm.kotlin")
-    id("com.google.gms.google-services")
+//    id("com.google.gms.google-services")
+//    id("com.google.devtools.ksp")
 }
 
 android {
     namespace = "com.gmail.orlandroyd.diarynotes"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.gmail.orlandroyd.diarynotes"
         minSdk = 21
-        targetSdk = 33
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
 
@@ -72,9 +73,14 @@ dependencies {
     implementation("com.google.firebase:firebase-storage-ktx:20.2.1")
 
     // Room components
+//    implementation("androidx.room:room-runtime:2.5.2")
+//    // To use Kotlin Symbol Processing (KSP)
+//    ksp("androidx.room:room-compiler:2.5.2")
+//    // optional - Kotlin Extensions and Coroutines support for Room
+//    implementation("androidx.room:room-ktx:2.5.2")
     implementation("androidx.room:room-runtime:2.5.2")
-    kapt("androidx.room:room-compiler:2.5.2")
     implementation("androidx.room:room-ktx:2.5.2")
+    kapt("androidx.room:room-compiler:2.5.2")
 
     // Runtime Compose
     implementation("androidx.lifecycle:lifecycle-runtime-compose:2.6.1")
@@ -111,9 +117,12 @@ dependencies {
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:1.2.0")
 
     // Dagger Hilt
-    implementation("com.google.dagger:hilt-android:2.44.2")
-    kapt("com.google.dagger:hilt-compiler:2.44.2")
-    implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
+//    implementation("com.google.dagger:hilt-android:2.48")
+//    ksp("com.google.dagger:hilt-compiler:2.48")
+//    implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
+    implementation("com.google.dagger:hilt-android:2.45")
+    kapt("com.google.dagger:hilt-android-compiler:2.45")
+    kapt("androidx.hilt:hilt-compiler:1.0.0")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
