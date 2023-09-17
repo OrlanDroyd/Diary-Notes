@@ -1,8 +1,11 @@
 package com.gmail.orlandroyd.diarynotes.navigation
 
+import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
@@ -12,9 +15,11 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.gmail.orlandroyd.diarynotes.presentation.screens.auth.AuthenticationScreen
 import com.gmail.orlandroyd.diarynotes.presentation.screens.auth.AuthenticationViewModel
+import com.gmail.orlandroyd.diarynotes.presentation.screens.home.HomeScreen
 import com.gmail.orlandroyd.diarynotes.util.Constants.WRITE_SCREEN_ARGUMENT_ID
 import com.stevdzasan.messagebar.rememberMessageBarState
 import com.stevdzasan.onetap.rememberOneTapSignInState
+import kotlinx.coroutines.launch
 
 @Composable
 fun SetupNavGraph(
@@ -25,14 +30,23 @@ fun SetupNavGraph(
         startDestination = startDestination,
         navController = navController
     ) {
-        authenticationRoute()
-        homeRoute()
+        authenticationRoute(
+            navigateToHome = {
+                navController.popBackStack()
+                navController.navigate(Screen.Home.route)
+            }
+        )
+        homeRoute(
+            navigateToWrite = {
+                navController.navigate(Screen.Write.route)
+            }
+        )
         writeRoute()
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
-fun NavGraphBuilder.authenticationRoute() {
+fun NavGraphBuilder.authenticationRoute(navigateToHome: () -> Unit) {
     composable(route = Screen.Authentication.route) {
 
         val viewModel: AuthenticationViewModel = viewModel()
@@ -42,7 +56,7 @@ fun NavGraphBuilder.authenticationRoute() {
         val messageBarState = rememberMessageBarState()
 
         AuthenticationScreen(
-//            authenticated = authenticated,
+            authenticated = authenticated,
             loadingState = loadingState,
             oneTapState = oneTapState,
             messageBarState = messageBarState,
@@ -71,9 +85,7 @@ fun NavGraphBuilder.authenticationRoute() {
                 viewModel.signInWithMongoAtlas(
                     tokenId = tokenId,
                     onSuccess = {
-                        if (it) {
-                            messageBarState.addSuccess("Successfully Authenticated!")
-                        }
+                        messageBarState.addSuccess("Successfully Authenticated!")
                         viewModel.setLoading(false)
                     },
                     onError = {
@@ -86,13 +98,28 @@ fun NavGraphBuilder.authenticationRoute() {
                 messageBarState.addError(Exception(message))
                 viewModel.setLoading(false)
             },
+            navigateToHome = {
+                navigateToHome()
+            }
         )
     }
 }
 
-fun NavGraphBuilder.homeRoute() {
+@OptIn(ExperimentalMaterial3Api::class)
+fun NavGraphBuilder.homeRoute(navigateToWrite: () -> Unit) {
     composable(route = Screen.Home.route) {
-
+        val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
+        val scope = rememberCoroutineScope()
+        HomeScreen(
+            drawerState = drawerState,
+            onMenuClicked = {
+                scope.launch {
+                    drawerState.open()
+                }
+            },
+            onSignOutClicked = {/*TODO*/ },
+            navigateToWrite = navigateToWrite,
+        )
     }
 }
 

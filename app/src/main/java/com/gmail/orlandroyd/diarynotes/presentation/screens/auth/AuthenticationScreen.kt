@@ -8,6 +8,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import com.gmail.orlandroyd.diarynotes.util.Constants.CLIENT_ID
 import com.stevdzasan.messagebar.ContentWithMessageBar
@@ -19,13 +20,14 @@ import com.stevdzasan.onetap.OneTapSignInWithGoogle
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun AuthenticationScreen(
-    // authenticated: Boolean,
+    authenticated: Boolean,
     loadingState: Boolean,
     oneTapState: OneTapSignInState,
     messageBarState: MessageBarState,
     onButtonClicked: () -> Unit,
     onTokenIdReceived: (String) -> Unit,
     onDialogDismissed: (String) -> Unit,
+    navigateToHome: () -> Unit,
 //    onSuccessfulFirebaseSignIn: (String) -> Unit,
 //    onFailedFirebaseSignIn: (Exception) -> Unit,
 ) {
@@ -63,4 +65,10 @@ fun AuthenticationScreen(
             onDialogDismissed(message)
         }
     )
+
+    LaunchedEffect(authenticated) {
+        if (authenticated) {
+            navigateToHome()
+        }
+    }
 }
