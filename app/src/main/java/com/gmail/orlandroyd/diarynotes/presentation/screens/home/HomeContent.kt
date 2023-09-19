@@ -1,38 +1,62 @@
 package com.gmail.orlandroyd.diarynotes.presentation.screens.home
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
-import androidx.compose.material3.Button
+import androidx.compose.foundation.layout.width
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.gmail.orlandroyd.diarynotes.util.Constants.APP_ID
-import io.realm.kotlin.mongodb.App
-import kotlinx.coroutines.launch
+import java.time.LocalDate
 
 @Composable
-fun HomeContent() {
-    Column(
-        modifier = Modifier.fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-    ) {
-        val scope = rememberCoroutineScope()
-        Text(text = "HOME")
-        Spacer(modifier = Modifier.height(16.dp))
-        Button(
-            onClick = {
-                scope.launch {
-                    App.create(APP_ID).currentUser?.logOut()
-                }
-            },
-            content = { Text(text = "Logout") }
-        )
+fun DateHeader(localDate: LocalDate) {
+    Row(verticalAlignment = Alignment.CenterVertically) {
+        Column(horizontalAlignment = Alignment.End) {
+            Text(
+                text = String.format("%02d", localDate.dayOfMonth),
+                style = TextStyle(
+                    fontSize = MaterialTheme.typography.bodySmall.fontSize,
+                    fontWeight = FontWeight.Light,
+                ),
+            )
+            Text(
+                text = localDate.dayOfWeek.toString().take(3),
+                style = TextStyle(
+                    fontSize = MaterialTheme.typography.bodySmall.fontSize,
+                    fontWeight = FontWeight.Light,
+                ),
+            )
+        }
+        Spacer(modifier = Modifier.width(14.dp))
+        Column(horizontalAlignment = Alignment.Start) {
+            Text(
+                text = localDate.month.toString().lowercase().replaceFirstChar { it.titlecase() },
+                style = TextStyle(
+                    fontSize = MaterialTheme.typography.bodySmall.fontSize,
+                    fontWeight = FontWeight.Light,
+                ),
+            )
+            Text(
+                text = localDate.year.toString(),
+                style = TextStyle(
+                    fontSize = MaterialTheme.typography.bodySmall.fontSize,
+                    fontWeight = FontWeight.Light,
+                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f),
+                ),
+            )
+        }
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun DateHeaderPreview() {
+    DateHeader(localDate = LocalDate.now())
 }
