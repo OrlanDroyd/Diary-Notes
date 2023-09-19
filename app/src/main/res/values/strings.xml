@@ -1,3 +1,15 @@
 <resources>
     <string name="app_name">Diary Notes</string>
+    <string name="auth_title">Welcome back</string>
+    <string name="auth_subtitle">Please sign in to continue.</string>
+    <string name="sign_in_with_google">Sign in with Google</string>
+    <string name="please_wait">Please wait...</string>
+    <string name="google_logo">Google Logo</string>
+    <string name="diary">Diary</string>
+    <string name="hamburger_menu_icon">Hamburger Menu Icon</string>
+    <string name="new_note">New Note</string>
+    <string name="date_range">Date Range</string>
+    <string name="logo_image">Logo Image</string>
+    <string name="sign_out">Sign out</string>
+    <string name="are_you_sure_you_want_to_sign_out_from_your_google_account">Are you sure you want to sign out from your Google Account?</string>
 </resources>
