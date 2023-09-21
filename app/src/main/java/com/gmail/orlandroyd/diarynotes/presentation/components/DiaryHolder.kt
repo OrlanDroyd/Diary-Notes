@@ -1,5 +1,6 @@
 package com.gmail.orlandroyd.diarynotes.presentation.components
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -17,6 +18,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Shapes
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -28,14 +30,17 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.gmail.orlandroyd.diarynotes.R
 import com.gmail.orlandroyd.diarynotes.model.Diary
 import com.gmail.orlandroyd.diarynotes.model.Mood
 import com.gmail.orlandroyd.diarynotes.ui.theme.Elevation
 import com.gmail.orlandroyd.diarynotes.util.toInstant
+import io.realm.kotlin.ext.realmListOf
 import java.time.Instant
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
@@ -48,6 +53,7 @@ fun DiaryHolder(
 ) {
     val localDensity = LocalDensity.current
     var componentHeight by remember { mutableStateOf(0.dp) }
+    var isGalleryOpened by remember { mutableStateOf(false) }
     Row(modifier = Modifier
         .clickable(
             indication = null,
@@ -81,6 +87,20 @@ fun DiaryHolder(
                     maxLines = 4,
                     overflow = TextOverflow.Ellipsis
                 )
+                if (diary.images.isNotEmpty()) {
+                    ShowGalleryButton(
+                        galleryOpened = isGalleryOpened,
+                        galleryLoading = false,
+                        onClick = {
+                            isGalleryOpened = !isGalleryOpened
+                        }
+                    )
+                }
+                AnimatedVisibility(visible = isGalleryOpened) {
+                    Column(modifier = Modifier.padding(all = 14.dp)) {
+                        Gallery(images = diary.images)
+                    }
+                }
             }
         }
     }
@@ -125,13 +145,30 @@ fun DiaryHeader(
     }
 }
 
+@Composable
+fun ShowGalleryButton(
+    galleryOpened: Boolean,
+    galleryLoading: Boolean,
+    onClick: () -> Unit
+) {
+    TextButton(onClick = onClick) {
+        Text(
+            text = if (galleryOpened)
+                if (galleryLoading) stringResource(R.string.loading) else stringResource(R.string.hide_gallery)
+            else stringResource(R.string.show_gallery),
+            style = TextStyle(fontSize = MaterialTheme.typography.bodySmall.fontSize)
+        )
+    }
+}
+
 @Preview(showBackground = true)
 @Composable
 fun DiaryHolderPreview() {
     DiaryHolder(
         diary = Diary().apply {
             title = "Ubi est camerarius decor?"
-            mood = Mood.Angry.name
+            mood = Mood.Humorous.name
+            images = realmListOf("", "")
             description =
                 "Ho-ho-ho! fight of strength. I dissolve this vision, it's called collective starlight travel.When the cloud rises for la marsa beach, all cannons love coal-black, shiny parrots.Sunt nutrixes promissio primus, teres adiuratores."
         },

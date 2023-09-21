@@ -12,4 +12,8 @@
     <string name="logo_image">Logo Image</string>
     <string name="sign_out">Sign out</string>
     <string name="are_you_sure_you_want_to_sign_out_from_your_google_account">Are you sure you want to sign out from your Google Account?</string>
+    <string name="gallery_image">Gallery Image</string>
+    <string name="loading">Loading</string>
+    <string name="hide_gallery">Hide Gallery</string>
+    <string name="show_gallery">Show Gallery</string>
 </resources>
