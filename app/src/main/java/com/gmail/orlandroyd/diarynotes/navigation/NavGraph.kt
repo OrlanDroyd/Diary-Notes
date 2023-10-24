@@ -4,6 +4,7 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -17,10 +18,12 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.gmail.orlandroyd.diarynotes.model.RequestState
 import com.gmail.orlandroyd.diarynotes.presentation.components.DisplayAlertDialog
 import com.gmail.orlandroyd.diarynotes.presentation.screens.auth.AuthenticationScreen
 import com.gmail.orlandroyd.diarynotes.presentation.screens.auth.AuthenticationViewModel
 import com.gmail.orlandroyd.diarynotes.presentation.screens.home.HomeScreen
+import com.gmail.orlandroyd.diarynotes.presentation.screens.home.HomeViewModel
 import com.gmail.orlandroyd.diarynotes.util.Constants.APP_ID
 import com.gmail.orlandroyd.diarynotes.util.Constants.WRITE_SCREEN_ARGUMENT_KEY
 import com.stevdzasan.messagebar.rememberMessageBarState
@@ -34,7 +37,8 @@ import kotlinx.coroutines.withContext
 @Composable
 fun SetupNavGraph(
     startDestination: String,
-    navController: NavHostController
+    navController: NavHostController,
+    onDataLoaded: () -> Unit
 ) {
     NavHost(
         startDestination = startDestination,
@@ -44,7 +48,8 @@ fun SetupNavGraph(
             navigateToHome = {
                 navController.popBackStack()
                 navController.navigate(Screen.Home.route)
-            }
+            },
+            onDataLoaded = onDataLoaded
         )
         homeRoute(
             navigateToWrite = {
@@ -57,14 +62,17 @@ fun SetupNavGraph(
                 navController.popBackStack()
                 navController.navigate(Screen.Authentication.route)
             },
-//            onDataLoaded = onDataLoaded
+            onDataLoaded = onDataLoaded
         )
         writeRoute()
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
-fun NavGraphBuilder.authenticationRoute(navigateToHome: () -> Unit) {
+fun NavGraphBuilder.authenticationRoute(
+    navigateToHome: () -> Unit,
+    onDataLoaded: () -> Unit
+) {
     composable(route = Screen.Authentication.route) {
 
         val viewModel: AuthenticationViewModel = viewModel()
@@ -72,6 +80,10 @@ fun NavGraphBuilder.authenticationRoute(navigateToHome: () -> Unit) {
         val loadingState by viewModel.loadingState
         val oneTapState = rememberOneTapSignInState()
         val messageBarState = rememberMessageBarState()
+
+        LaunchedEffect(Unit) {
+            onDataLoaded()
+        }
 
         AuthenticationScreen(
             authenticated = authenticated,
@@ -128,25 +140,25 @@ fun NavGraphBuilder.homeRoute(
     navigateToWrite: () -> Unit,
 //    navigateToWriteWithArgs: (String) -> Unit,
     navigateToAuth: () -> Unit,
-//    onDataLoaded: () -> Unit
+    onDataLoaded: () -> Unit
 ) {
     composable(route = Screen.Home.route) {
-        // val viewModel: HomeViewModel = hiltViewModel()
-        // val diaries by viewModel.diaries
+        val viewModel: HomeViewModel = viewModel()
+        val diaries by viewModel.diaries
         val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
         val scope = rememberCoroutineScope()
         val context = LocalContext.current
         var signOutDialogOpened by remember { mutableStateOf(false) }
         var deleteAllDialogOpened by remember { mutableStateOf(false) }
 
-//        LaunchedEffect(key1 = diaries) {
-//            if (diaries !is RequestState.Loading) {
-//                onDataLoaded()
-//            }
-//        }
+        LaunchedEffect(diaries) {
+            if (diaries !is RequestState.Loading) {
+                onDataLoaded()
+            }
+        }
 
         HomeScreen(
-//            diaries = diaries,
+            diaries = diaries,
             drawerState = drawerState,
             onMenuClicked = {
                 scope.launch {
