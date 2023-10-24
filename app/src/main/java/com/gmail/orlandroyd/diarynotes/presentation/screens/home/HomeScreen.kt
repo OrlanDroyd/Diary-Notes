@@ -56,11 +56,7 @@ fun HomeScreen(
                 }
             },
             content = {
-                HomeScreen(
-                    drawerState = drawerState,
-                    onMenuClicked = { /*TODO*/ },
-                    onSignOutClicked = { /*TODO*/ }) {
-                }
+                HomeContent(diaryNotes = mapOf(), onClick = {})
             }
         )
     }

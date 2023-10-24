@@ -16,4 +16,6 @@
     <string name="loading">Loading</string>
     <string name="hide_gallery">Hide Gallery</string>
     <string name="show_gallery">Show Gallery</string>
+    <string name="empty_diary">Empty Diary</string>
+    <string name="write_something">Write Something</string>
 </resources>
