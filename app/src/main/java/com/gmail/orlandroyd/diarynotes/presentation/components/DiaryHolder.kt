@@ -1,6 +1,10 @@
 package com.gmail.orlandroyd.diarynotes.presentation.components
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.spring
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -96,7 +100,15 @@ fun DiaryHolder(
                         }
                     )
                 }
-                AnimatedVisibility(visible = isGalleryOpened) {
+                AnimatedVisibility(
+                    visible = isGalleryOpened,
+                    enter = fadeIn() + expandVertically(
+                        animationSpec = spring(
+                            dampingRatio = Spring.DampingRatioMediumBouncy,
+                            stiffness = Spring.StiffnessLow
+                        )
+                    )
+                ) {
                     Column(modifier = Modifier.padding(all = 14.dp)) {
                         Gallery(images = diary.images)
                     }
