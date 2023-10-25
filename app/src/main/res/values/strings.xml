@@ -20,4 +20,8 @@
     <string name="write_something">Write Something</string>
     <string name="error">Error</string>
     <string name="error_subtitle">%1$s</string>
+    <string name="back_arrow_icon">Back Arrow Icon</string>
+    <string name="date_icon">Date Icon</string>
+    <string name="delete">Delete</string>
+    <string name="are_you_sure_you_want_to_permanently_delete_this_diary_note">Are you sure you want to permanently delete this diary note \'%1$s\'?</string>
 </resources>

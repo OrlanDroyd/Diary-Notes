@@ -24,6 +24,7 @@ import com.gmail.orlandroyd.diarynotes.presentation.screens.auth.AuthenticationS
 import com.gmail.orlandroyd.diarynotes.presentation.screens.auth.AuthenticationViewModel
 import com.gmail.orlandroyd.diarynotes.presentation.screens.home.HomeScreen
 import com.gmail.orlandroyd.diarynotes.presentation.screens.home.HomeViewModel
+import com.gmail.orlandroyd.diarynotes.presentation.screens.write.WriteScreen
 import com.gmail.orlandroyd.diarynotes.util.Constants.APP_ID
 import com.gmail.orlandroyd.diarynotes.util.Constants.WRITE_SCREEN_ARGUMENT_KEY
 import com.stevdzasan.messagebar.rememberMessageBarState
@@ -64,7 +65,11 @@ fun SetupNavGraph(
             },
             onDataLoaded = onDataLoaded
         )
-        writeRoute()
+        writeRoute(
+            onBackPressed = {
+                navController.popBackStack()
+            }
+        )
     }
 }
 
@@ -227,7 +232,9 @@ fun NavGraphBuilder.homeRoute(
     }
 }
 
-fun NavGraphBuilder.writeRoute() {
+fun NavGraphBuilder.writeRoute(
+    onBackPressed: () -> Unit
+) {
     composable(
         route = Screen.Write.route,
         arguments = listOf(navArgument(name = WRITE_SCREEN_ARGUMENT_KEY) {
@@ -236,6 +243,10 @@ fun NavGraphBuilder.writeRoute() {
             defaultValue = null
         })
     ) {
-
+        WriteScreen(
+            selectedDiary = null,
+            onBackPressed = onBackPressed,
+            onDeleteConfirmed = {}
+        )
     }
 }
