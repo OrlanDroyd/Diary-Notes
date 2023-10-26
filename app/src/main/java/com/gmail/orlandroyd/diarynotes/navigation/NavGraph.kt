@@ -27,6 +27,8 @@ import com.gmail.orlandroyd.diarynotes.presentation.screens.home.HomeViewModel
 import com.gmail.orlandroyd.diarynotes.presentation.screens.write.WriteScreen
 import com.gmail.orlandroyd.diarynotes.util.Constants.APP_ID
 import com.gmail.orlandroyd.diarynotes.util.Constants.WRITE_SCREEN_ARGUMENT_KEY
+import com.google.accompanist.pager.ExperimentalPagerApi
+import com.google.accompanist.pager.rememberPagerState
 import com.stevdzasan.messagebar.rememberMessageBarState
 import com.stevdzasan.onetap.rememberOneTapSignInState
 import io.realm.kotlin.mongodb.App
@@ -232,6 +234,7 @@ fun NavGraphBuilder.homeRoute(
     }
 }
 
+@OptIn(ExperimentalPagerApi::class)
 fun NavGraphBuilder.writeRoute(
     onBackPressed: () -> Unit
 ) {
@@ -243,7 +246,9 @@ fun NavGraphBuilder.writeRoute(
             defaultValue = null
         })
     ) {
+        val pagerState = rememberPagerState()
         WriteScreen(
+            pagerState = pagerState,
             selectedDiary = null,
             onBackPressed = onBackPressed,
             onDeleteConfirmed = {}
