@@ -1,6 +1,7 @@
 package com.gmail.orlandroyd.diarynotes.navigation
 
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -25,6 +26,7 @@ import com.gmail.orlandroyd.diarynotes.presentation.screens.auth.AuthenticationV
 import com.gmail.orlandroyd.diarynotes.presentation.screens.home.HomeScreen
 import com.gmail.orlandroyd.diarynotes.presentation.screens.home.HomeViewModel
 import com.gmail.orlandroyd.diarynotes.presentation.screens.write.WriteScreen
+import com.gmail.orlandroyd.diarynotes.presentation.screens.write.WriteViewModel
 import com.gmail.orlandroyd.diarynotes.util.Constants.APP_ID
 import com.gmail.orlandroyd.diarynotes.util.Constants.WRITE_SCREEN_ARGUMENT_KEY
 import com.google.accompanist.pager.ExperimentalPagerApi
@@ -58,9 +60,9 @@ fun SetupNavGraph(
             navigateToWrite = {
                 navController.navigate(Screen.Write.route)
             },
-//            navigateToWriteWithArgs = {
-//                navController.navigate(Screen.Write.passDiaryId(diaryId = it))
-//            },
+            navigateToWriteWithArgs = {
+                navController.navigate(Screen.Write.passDiaryId(diaryId = it))
+            },
             navigateToAuth = {
                 navController.popBackStack()
                 navController.navigate(Screen.Authentication.route)
@@ -126,6 +128,10 @@ fun NavGraphBuilder.authenticationRoute(
                         viewModel.setLoading(false)
                     },
                     onError = {
+                        Log.e(
+                            "DEBUG-MSG",
+                            "${this.javaClass.classes} onTokenIdReceived -> ${it.message}"
+                        )
                         messageBarState.addError(it)
                         viewModel.setLoading(false)
                     }
@@ -145,7 +151,7 @@ fun NavGraphBuilder.authenticationRoute(
 @RequiresApi(Build.VERSION_CODES.N)
 fun NavGraphBuilder.homeRoute(
     navigateToWrite: () -> Unit,
-//    navigateToWriteWithArgs: (String) -> Unit,
+    navigateToWriteWithArgs: (String) -> Unit,
     navigateToAuth: () -> Unit,
     onDataLoaded: () -> Unit
 ) {
@@ -178,7 +184,7 @@ fun NavGraphBuilder.homeRoute(
             onSignOutClicked = { signOutDialogOpened = true },
 //            onDeleteAllClicked = { deleteAllDialogOpened = true },
             navigateToWrite = navigateToWrite,
-//            navigateToWriteWithArgs = navigateToWriteWithArgs
+            navigateToWriteWithArgs = navigateToWriteWithArgs
         )
 
         DisplayAlertDialog(
@@ -246,12 +252,22 @@ fun NavGraphBuilder.writeRoute(
             defaultValue = null
         })
     ) {
+        val viewModel: WriteViewModel = viewModel()
+        val uiState = viewModel.uiState
         val pagerState = rememberPagerState()
+
+        LaunchedEffect(uiState) {
+            Log.d("DEBUG-MSG", "${this.javaClass.canonicalName} -> ${uiState.selectedDiaryId}")
+        }
+
         WriteScreen(
+            uiState = uiState,
             pagerState = pagerState,
             selectedDiary = null,
             onBackPressed = onBackPressed,
-            onDeleteConfirmed = {}
+            onDeleteConfirmed = {},
+            onTitleChange = { viewModel.setTitle(it) },
+            onDescriptionChange = { viewModel.setDescription(it) },
         )
     }
 }
