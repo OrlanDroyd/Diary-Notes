@@ -77,39 +77,39 @@ fun DateHeader(localDate: LocalDate) {
             Text(
                 text = String.format("%02d", localDate.dayOfMonth),
                 style = TextStyle(
-                    fontSize = MaterialTheme.typography.bodySmall.fontSize,
-                    fontWeight = FontWeight.Light,
-                ),
+                    fontSize = MaterialTheme.typography.titleLarge.fontSize,
+                    fontWeight = FontWeight.Light
+                )
             )
             Text(
                 text = localDate.dayOfWeek.toString().take(3),
                 style = TextStyle(
                     fontSize = MaterialTheme.typography.bodySmall.fontSize,
-                    fontWeight = FontWeight.Light,
-                ),
+                    fontWeight = FontWeight.Light
+                )
             )
         }
         Spacer(modifier = Modifier.width(14.dp))
         Column(horizontalAlignment = Alignment.Start) {
             Text(
-                text = localDate.month.toString().lowercase().replaceFirstChar { it.titlecase() },
+                text = localDate.month.toString().lowercase()
+                    .replaceFirstChar { it.titlecase() },
                 style = TextStyle(
-                    fontSize = MaterialTheme.typography.bodySmall.fontSize,
-                    fontWeight = FontWeight.Light,
-                ),
+                    fontSize = MaterialTheme.typography.titleLarge.fontSize,
+                    fontWeight = FontWeight.Light
+                )
             )
             Text(
-                text = localDate.year.toString(),
+                text = "${localDate.year}",
+                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f),
                 style = TextStyle(
                     fontSize = MaterialTheme.typography.bodySmall.fontSize,
-                    fontWeight = FontWeight.Light,
-                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f),
-                ),
+                    fontWeight = FontWeight.Light
+                )
             )
         }
     }
 }
-
 
 @Composable
 fun EmptyPage(
