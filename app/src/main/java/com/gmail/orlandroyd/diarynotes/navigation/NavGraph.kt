@@ -6,6 +6,7 @@ import androidx.annotation.RequiresApi
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -19,6 +20,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.gmail.orlandroyd.diarynotes.model.Mood
 import com.gmail.orlandroyd.diarynotes.model.RequestState
 import com.gmail.orlandroyd.diarynotes.presentation.components.DisplayAlertDialog
 import com.gmail.orlandroyd.diarynotes.presentation.screens.auth.AuthenticationScreen
@@ -240,6 +242,7 @@ fun NavGraphBuilder.homeRoute(
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.N)
 @OptIn(ExperimentalPagerApi::class)
 fun NavGraphBuilder.writeRoute(
     onBackPressed: () -> Unit
@@ -255,6 +258,7 @@ fun NavGraphBuilder.writeRoute(
         val viewModel: WriteViewModel = viewModel()
         val uiState = viewModel.uiState
         val pagerState = rememberPagerState()
+        val pageNumber by remember { derivedStateOf { pagerState.currentPage } }
 
         LaunchedEffect(uiState) {
             Log.d("DEBUG-MSG", "${this.javaClass.canonicalName} -> ${uiState.selectedDiaryId}")
@@ -263,11 +267,22 @@ fun NavGraphBuilder.writeRoute(
         WriteScreen(
             uiState = uiState,
             pagerState = pagerState,
-            selectedDiary = null,
+            moodName = { Mood.values()[pageNumber].name },
             onBackPressed = onBackPressed,
             onDeleteConfirmed = {},
             onTitleChange = { viewModel.setTitle(it) },
             onDescriptionChange = { viewModel.setDescription(it) },
+            onSaveClicked = {
+                viewModel.insertDiary(
+                    diary = it.apply {
+                        mood = Mood.values()[pageNumber].name
+                    },
+                    onSuccess = { onBackPressed() },
+                    onError = { error ->
+                        Log.d("DEBUG-MSG", "${this.javaClass.canonicalName}: onError -> $error")
+                    }
+                )
+            }
         )
     }
 }

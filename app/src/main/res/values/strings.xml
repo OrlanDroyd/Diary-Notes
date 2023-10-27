@@ -28,4 +28,5 @@
     <string name="title">Title</string>
     <string name="tell_me_about_it">Tell me about it…</string>
     <string name="save">Save</string>
+    <string name="fields_cannot_be_empty">Fields cannot be empty</string>
 </resources>
