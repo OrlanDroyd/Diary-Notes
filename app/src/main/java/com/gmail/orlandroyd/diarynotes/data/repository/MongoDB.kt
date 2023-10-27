@@ -10,10 +10,10 @@ import io.realm.kotlin.log.LogLevel
 import io.realm.kotlin.mongodb.App
 import io.realm.kotlin.mongodb.sync.SyncConfiguration
 import io.realm.kotlin.query.Sort
-import io.realm.kotlin.types.ObjectId
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
+import org.mongodb.kbson.ObjectId
 import java.time.ZoneId
 
 object MongoDB : MongoRepository {
@@ -86,6 +86,26 @@ object MongoDB : MongoRepository {
                     RequestState.Success(data = addedDiary)
                 } catch (e: Exception) {
                     RequestState.Error(e)
+                }
+            }
+        } else {
+            RequestState.Error(UserNotAuthenticatedException())
+        }
+    }
+
+    override suspend fun updateDiary(diary: Diary): RequestState<Diary> {
+        return if (user != null) {
+            realm.write {
+                val queryDiary = query<Diary>("_id == $0", diary._id).first().find()
+                if (queryDiary != null) {
+                    queryDiary.title = diary.title
+                    queryDiary.description = diary.description
+                    queryDiary.mood = diary.mood
+                    queryDiary.images = diary.images
+                    queryDiary.date = diary.date
+                    RequestState.Success(data = queryDiary)
+                } else {
+                    RequestState.Error(error = Exception("Queried diary does not exist."))
                 }
             }
         } else {
