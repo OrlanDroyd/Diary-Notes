@@ -10,6 +10,7 @@ import com.gmail.orlandroyd.diarynotes.model.Diary
 import com.gmail.orlandroyd.diarynotes.model.Mood
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.PagerState
+import java.time.ZonedDateTime
 
 @RequiresApi(Build.VERSION_CODES.N)
 @OptIn(ExperimentalPagerApi::class)
@@ -23,7 +24,8 @@ fun WriteScreen(
     onDeleteConfirmed: () -> Unit,
     onTitleChange: (String) -> Unit,
     onDescriptionChange: (String) -> Unit,
-    onSaveClicked: (Diary) -> Unit
+    onSaveClicked: (Diary) -> Unit,
+    onDateTimeUpdated: (ZonedDateTime) -> Unit
 ) {
     LaunchedEffect(uiState.mood) {
         pagerState.scrollToPage(Mood.valueOf(uiState.mood.name).ordinal)
@@ -32,9 +34,10 @@ fun WriteScreen(
         topBar = {
             WriteTopBar(
                 moodName = moodName,
-                selectedDiary = uiState.selectedDiary,
                 onBackPressed = onBackPressed,
-                onDeleteConfirmed = onDeleteConfirmed
+                onDeleteConfirmed = onDeleteConfirmed,
+                onDateTimeUpdated = onDateTimeUpdated,
+                uiState = uiState
             )
         },
         content = {

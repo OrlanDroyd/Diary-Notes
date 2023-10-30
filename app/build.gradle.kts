@@ -103,10 +103,10 @@ dependencies {
     implementation("com.google.accompanist:accompanist-pager:0.27.0")
 
     // Date-Time Picker
-    implementation("com.maxkeppeler.sheets-compose-dialogs:core:1.2.0")
+    implementation("com.maxkeppeler.sheets-compose-dialogs:core:1.0.2")
 
     // CALENDAR
-    implementation("com.maxkeppeler.sheets-compose-dialogs:calendar:1.2.0")
+    implementation("com.maxkeppeler.sheets-compose-dialogs:calendar:1.0.2")
 
     // CLOCK
     implementation("com.maxkeppeler.sheets-compose-dialogs:clock:1.0.2")

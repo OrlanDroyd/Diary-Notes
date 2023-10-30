@@ -11,10 +11,13 @@ import com.gmail.orlandroyd.diarynotes.model.Diary
 import com.gmail.orlandroyd.diarynotes.model.Mood
 import com.gmail.orlandroyd.diarynotes.model.RequestState
 import com.gmail.orlandroyd.diarynotes.util.Constants.WRITE_SCREEN_ARGUMENT_KEY
+import com.gmail.orlandroyd.diarynotes.util.toRealmInstant
+import io.realm.kotlin.types.RealmInstant
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.mongodb.kbson.ObjectId
+import java.time.ZonedDateTime
 
 class WriteViewModel(
     private val savedStateHandle: SavedStateHandle
@@ -69,6 +72,10 @@ class WriteViewModel(
         uiState = uiState.copy(selectedDiary = diary)
     }
 
+    fun updateDateTime(zonedDateTime: ZonedDateTime) {
+        uiState = uiState.copy(updatedDateTime = zonedDateTime.toInstant().toRealmInstant())
+    }
+
     fun upsert(
         diary: Diary,
         onSuccess: () -> Unit,
@@ -88,7 +95,11 @@ class WriteViewModel(
         onSuccess: () -> Unit,
         onError: (String) -> Unit,
     ) {
-        val result = MongoDB.insertDiary(diary)
+        val result = MongoDB.insertDiary(diary.apply {
+            if (uiState.updatedDateTime != null) {
+                date = uiState.updatedDateTime!!
+            }
+        })
         if (result is RequestState.Success) {
             withContext(Dispatchers.Main) {
                 onSuccess()
@@ -107,7 +118,11 @@ class WriteViewModel(
     ) {
         val result = MongoDB.updateDiary(diary.apply {
             _id = ObjectId.invoke(uiState.selectedDiaryId!!)
-            date = uiState.selectedDiary!!.date
+            date = if (uiState.updatedDateTime != null) {
+                uiState.updatedDateTime!!
+            } else {
+                uiState.selectedDiary!!.date
+            }
 
         })
         if (result is RequestState.Success) {
@@ -128,4 +143,5 @@ data class UiState(
     val title: String = "",
     val description: String = "",
     val mood: Mood = Mood.Neutral,
+    val updatedDateTime: RealmInstant? = null
 )

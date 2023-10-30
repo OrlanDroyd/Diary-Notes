@@ -270,8 +270,8 @@ fun NavGraphBuilder.writeRoute(
             moodName = { Mood.values()[pageNumber].name },
             onBackPressed = onBackPressed,
             onDeleteConfirmed = {},
-            onTitleChange = { viewModel.setTitle(it) },
-            onDescriptionChange = { viewModel.setDescription(it) },
+            onTitleChange = viewModel::setTitle,
+            onDescriptionChange = viewModel::setDescription,
             onSaveClicked = {
                 viewModel.upsert(
                     diary = it.apply {
@@ -282,7 +282,8 @@ fun NavGraphBuilder.writeRoute(
                         Log.d("DEBUG-MSG", "${this.javaClass.canonicalName}: onError -> $error")
                     }
                 )
-            }
+            },
+            onDateTimeUpdated = viewModel::updateDateTime
         )
     }
 }
