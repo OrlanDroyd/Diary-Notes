@@ -2,6 +2,7 @@ package com.gmail.orlandroyd.diarynotes.navigation
 
 import android.os.Build
 import android.util.Log
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -255,6 +256,7 @@ fun NavGraphBuilder.writeRoute(
             defaultValue = null
         })
     ) {
+        val context = LocalContext.current
         val viewModel: WriteViewModel = viewModel()
         val uiState = viewModel.uiState
         val pagerState = rememberPagerState()
@@ -269,7 +271,16 @@ fun NavGraphBuilder.writeRoute(
             pagerState = pagerState,
             moodName = { Mood.values()[pageNumber].name },
             onBackPressed = onBackPressed,
-            onDeleteConfirmed = {},
+            onDeleteConfirmed = {
+                viewModel.deleteDiary(
+                    onSuccess = {
+                        Toast.makeText(context, "Deleted", Toast.LENGTH_SHORT).show()
+                    },
+                    onError = { message ->
+                        Toast.makeText(context, "Error: $message", Toast.LENGTH_SHORT).show()
+                    }
+                )
+            },
             onTitleChange = viewModel::setTitle,
             onDescriptionChange = viewModel::setDescription,
             onSaveClicked = {
@@ -278,8 +289,8 @@ fun NavGraphBuilder.writeRoute(
                         mood = Mood.values()[pageNumber].name
                     },
                     onSuccess = { onBackPressed() },
-                    onError = { error ->
-                        Log.d("DEBUG-MSG", "${this.javaClass.canonicalName}: onError -> $error")
+                    onError = { message ->
+                        Toast.makeText(context, "Error: $message", Toast.LENGTH_SHORT).show()
                     }
                 )
             },
