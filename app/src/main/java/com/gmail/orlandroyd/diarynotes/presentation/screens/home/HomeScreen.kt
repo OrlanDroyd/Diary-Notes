@@ -52,6 +52,7 @@ fun HomeScreen(
     onMenuClicked: () -> Unit,
     onSignOutClicked: () -> Unit,
     navigateToWrite: () -> Unit,
+    navigateToWriteWithArgs: (String) -> Unit,
 ) {
 
     var padding by remember { mutableStateOf(PaddingValues()) }
@@ -88,7 +89,7 @@ fun HomeScreen(
                         HomeContent(
                             paddingValues = paddingValues,
                             diaryNotes = diaries.data,
-                            onClick = {}
+                            onClick = navigateToWriteWithArgs
                         )
                     }
 
@@ -119,7 +120,6 @@ fun HomeScreen(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NavigationDrawer(
     drawerState: DrawerState,
