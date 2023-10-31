@@ -1,5 +1,6 @@
 package com.gmail.orlandroyd.diarynotes.presentation.screens.write
 
+import android.net.Uri
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.Bottom
@@ -39,7 +40,9 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.gmail.orlandroyd.diarynotes.R
 import com.gmail.orlandroyd.diarynotes.model.Diary
+import com.gmail.orlandroyd.diarynotes.model.GalleryState
 import com.gmail.orlandroyd.diarynotes.model.Mood
+import com.gmail.orlandroyd.diarynotes.presentation.components.GalleryUploader
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.PagerState
@@ -49,11 +52,13 @@ import kotlinx.coroutines.launch
 @Composable
 fun WriteContent(
     uiState: UiState,
+    galleryState: GalleryState,
+    pagerState: PagerState,
     onTitleChange: (String) -> Unit,
     onDescriptionChange: (String) -> Unit,
     paddingValues: PaddingValues,
-    pagerState: PagerState,
-    onSaveClicked: (Diary) -> Unit
+    onSaveClicked: (Diary) -> Unit,
+    onImageSelect: (Uri) -> Unit
 ) {
     val scrollState = rememberScrollState()
     val scope = rememberCoroutineScope()
@@ -155,7 +160,16 @@ fun WriteContent(
         }
         Column(verticalArrangement = Bottom) {
 
-            Spacer(modifier = Modifier.height(30.dp))
+            Spacer(modifier = Modifier.height(12.dp))
+
+            GalleryUploader(
+                galleryState = galleryState,
+                onAddClick = { /*TODO*/ },
+                onImageSelect = onImageSelect,
+                onImageClicked = { /*TODO*/ }
+            )
+
+            Spacer(modifier = Modifier.height(12.dp))
 
             Button(
                 modifier = Modifier

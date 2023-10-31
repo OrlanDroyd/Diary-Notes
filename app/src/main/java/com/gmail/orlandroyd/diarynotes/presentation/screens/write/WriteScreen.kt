@@ -1,12 +1,14 @@
 package com.gmail.orlandroyd.diarynotes.presentation.screens.write
 
 import android.annotation.SuppressLint
+import android.net.Uri
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import com.gmail.orlandroyd.diarynotes.model.Diary
+import com.gmail.orlandroyd.diarynotes.model.GalleryState
 import com.gmail.orlandroyd.diarynotes.model.Mood
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.PagerState
@@ -19,13 +21,15 @@ import java.time.ZonedDateTime
 fun WriteScreen(
     uiState: UiState,
     pagerState: PagerState,
+    galleryState: GalleryState,
     moodName: () -> String,
     onBackPressed: () -> Unit,
     onDeleteConfirmed: () -> Unit,
     onTitleChange: (String) -> Unit,
     onDescriptionChange: (String) -> Unit,
     onSaveClicked: (Diary) -> Unit,
-    onDateTimeUpdated: (ZonedDateTime) -> Unit
+    onDateTimeUpdated: (ZonedDateTime) -> Unit,
+    onImageSelect: (Uri) -> Unit
 ) {
     LaunchedEffect(uiState.mood) {
         pagerState.scrollToPage(Mood.valueOf(uiState.mood.name).ordinal)
@@ -43,11 +47,13 @@ fun WriteScreen(
         content = {
             WriteContent(
                 uiState = uiState,
+                pagerState = pagerState,
+                galleryState = galleryState,
                 onTitleChange = onTitleChange,
                 onDescriptionChange = onDescriptionChange,
                 paddingValues = it,
-                pagerState = pagerState,
-                onSaveClicked = onSaveClicked
+                onSaveClicked = onSaveClicked,
+                onImageSelect = onImageSelect
             )
         }
     )

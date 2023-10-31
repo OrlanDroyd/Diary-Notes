@@ -21,8 +21,10 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.gmail.orlandroyd.diarynotes.model.GalleryImage
 import com.gmail.orlandroyd.diarynotes.model.Mood
 import com.gmail.orlandroyd.diarynotes.model.RequestState
+import com.gmail.orlandroyd.diarynotes.model.rememberGalleryState
 import com.gmail.orlandroyd.diarynotes.presentation.components.DisplayAlertDialog
 import com.gmail.orlandroyd.diarynotes.presentation.screens.auth.AuthenticationScreen
 import com.gmail.orlandroyd.diarynotes.presentation.screens.auth.AuthenticationViewModel
@@ -260,6 +262,7 @@ fun NavGraphBuilder.writeRoute(
         val viewModel: WriteViewModel = viewModel()
         val uiState = viewModel.uiState
         val pagerState = rememberPagerState()
+        val galleryState = rememberGalleryState()
         val pageNumber by remember { derivedStateOf { pagerState.currentPage } }
 
         LaunchedEffect(uiState) {
@@ -269,6 +272,7 @@ fun NavGraphBuilder.writeRoute(
         WriteScreen(
             uiState = uiState,
             pagerState = pagerState,
+            galleryState = galleryState,
             moodName = { Mood.values()[pageNumber].name },
             onBackPressed = onBackPressed,
             onDeleteConfirmed = {
@@ -294,7 +298,15 @@ fun NavGraphBuilder.writeRoute(
                     }
                 )
             },
-            onDateTimeUpdated = viewModel::updateDateTime
+            onDateTimeUpdated = viewModel::updateDateTime,
+            onImageSelect = {
+                galleryState.addImage(
+                    GalleryImage(
+                        image = it,
+                        remoteImagePath = ""
+                    )
+                )
+            }
         )
     }
 }
