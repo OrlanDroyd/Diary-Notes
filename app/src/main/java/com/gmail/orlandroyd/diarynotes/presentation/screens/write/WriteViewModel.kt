@@ -1,5 +1,7 @@
 package com.gmail.orlandroyd.diarynotes.presentation.screens.write
 
+import android.net.Uri
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -8,10 +10,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.gmail.orlandroyd.diarynotes.data.repository.MongoDB
 import com.gmail.orlandroyd.diarynotes.model.Diary
+import com.gmail.orlandroyd.diarynotes.model.GalleryImage
+import com.gmail.orlandroyd.diarynotes.model.GalleryState
 import com.gmail.orlandroyd.diarynotes.model.Mood
 import com.gmail.orlandroyd.diarynotes.model.RequestState
 import com.gmail.orlandroyd.diarynotes.util.Constants.WRITE_SCREEN_ARGUMENT_KEY
 import com.gmail.orlandroyd.diarynotes.util.toRealmInstant
+import com.google.firebase.auth.FirebaseAuth
 import io.realm.kotlin.types.RealmInstant
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.catch
@@ -23,6 +28,8 @@ import java.time.ZonedDateTime
 class WriteViewModel(
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
+
+    val galleryState = GalleryState()
 
     var uiState by mutableStateOf(UiState())
         private set
@@ -160,6 +167,19 @@ class WriteViewModel(
             }
         }
     }
+
+    fun addImage(image: Uri, imageType: String) {
+        val remoteImagePath =
+            "images/${FirebaseAuth.getInstance().currentUser?.uid}/${image.lastPathSegment}-${System.currentTimeMillis()}.$imageType"
+        Log.d("DEBUG-MSG", "${this::class.java.simpleName}: remoteImagePath -> $remoteImagePath")
+        galleryState.addImage(
+            galleryImage = GalleryImage(
+                image = image,
+                remoteImagePath = remoteImagePath
+            )
+        )
+    }
+
 }
 
 data class UiState(
