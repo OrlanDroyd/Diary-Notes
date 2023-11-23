@@ -12,6 +12,7 @@ import com.gmail.orlandroyd.diarynotes.navigation.Screen
 import com.gmail.orlandroyd.diarynotes.navigation.SetupNavGraph
 import com.gmail.orlandroyd.diarynotes.ui.theme.DiaryNotesTheme
 import com.gmail.orlandroyd.diarynotes.util.Constants.APP_ID
+import com.google.firebase.FirebaseApp
 import io.realm.kotlin.mongodb.App
 
 class MainActivity : ComponentActivity() {
@@ -24,6 +25,7 @@ class MainActivity : ComponentActivity() {
         installSplashScreen().setKeepOnScreenCondition {
             keepSplashOpen
         }
+        FirebaseApp.initializeApp(this)
         WindowCompat.setDecorFitsSystemWindows(window, false)
         setContent {
             DiaryNotesTheme {
