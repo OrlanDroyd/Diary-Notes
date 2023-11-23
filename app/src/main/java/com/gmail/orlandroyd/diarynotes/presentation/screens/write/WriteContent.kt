@@ -46,6 +46,7 @@ import com.gmail.orlandroyd.diarynotes.presentation.components.GalleryUploader
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.PagerState
+import io.realm.kotlin.ext.toRealmList
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalPagerApi::class, ExperimentalMaterial3Api::class)
@@ -182,6 +183,8 @@ fun WriteContent(
                             Diary().apply {
                                 title = uiState.title
                                 description = uiState.description
+                                images =
+                                    galleryState.images.map { it.remoteImagePath }.toRealmList()
                             }
                         )
                     } else {

@@ -44,7 +44,7 @@ import kotlin.math.max
 
 @Composable
 fun Gallery(
-    images: List<String>,
+    images: List<Uri>,
     modifier: Modifier = Modifier,
     imageSize: Dp = 40.dp,
     spaceBetween: Dp = 10.dp,
@@ -76,6 +76,7 @@ fun Gallery(
                         .data(image)
                         .crossfade(true)
                         .build(),
+                    contentScale = ContentScale.Crop,
                     contentDescription = stringResource(R.string.gallery_image)
                 )
                 Spacer(modifier = Modifier.width(spaceBetween))
