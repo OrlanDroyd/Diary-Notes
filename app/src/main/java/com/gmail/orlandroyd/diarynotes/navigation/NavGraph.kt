@@ -14,6 +14,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
@@ -106,24 +107,7 @@ fun NavGraphBuilder.authenticationRoute(
                 oneTapState.open()
                 viewModel.setLoading(true)
             },
-//            onSuccessfulFirebaseSignIn = { tokenId ->
-//                viewModel.signInWithMongoAtlas(
-//                    tokenId = tokenId,
-//                    onSuccess = {
-//                        messageBarState.addSuccess("Successfully Authenticated!")
-//                        viewModel.setLoading(false)
-//                    },
-//                    onError = {
-//                        messageBarState.addError(it)
-//                        viewModel.setLoading(false)
-//                    }
-//                )
-//            },
-//            onFailedFirebaseSignIn = {
-//                messageBarState.addError(it)
-//                viewModel.setLoading(false)
-//            },
-            onTokenIdReceived = { tokenId ->
+            onSuccessfulFirebaseSignIn = { tokenId ->
                 viewModel.signInWithMongoAtlas(
                     tokenId = tokenId,
                     onSuccess = {
@@ -131,14 +115,14 @@ fun NavGraphBuilder.authenticationRoute(
                         viewModel.setLoading(false)
                     },
                     onError = {
-                        Log.e(
-                            "DEBUG-MSG",
-                            "${this.javaClass.classes} onTokenIdReceived -> ${it.message}"
-                        )
                         messageBarState.addError(it)
                         viewModel.setLoading(false)
                     }
                 )
+            },
+            onFailedFirebaseSignIn = {
+                messageBarState.addError(it)
+                viewModel.setLoading(false)
             },
             onDialogDismissed = { message ->
                 messageBarState.addError(Exception(message))
@@ -257,8 +241,9 @@ fun NavGraphBuilder.writeRoute(
         })
     ) {
         val context = LocalContext.current
-        val viewModel: WriteViewModel = viewModel()
+        val viewModel: WriteViewModel = hiltViewModel()
         val uiState = viewModel.uiState
+        val galleryState = viewModel.galleryState
         val pagerState = rememberPagerState()
         val pageNumber by remember { derivedStateOf { pagerState.currentPage } }
 
@@ -269,6 +254,7 @@ fun NavGraphBuilder.writeRoute(
         WriteScreen(
             uiState = uiState,
             pagerState = pagerState,
+            galleryState = galleryState,
             moodName = { Mood.values()[pageNumber].name },
             onBackPressed = onBackPressed,
             onDeleteConfirmed = {
@@ -294,7 +280,17 @@ fun NavGraphBuilder.writeRoute(
                     }
                 )
             },
-            onDateTimeUpdated = viewModel::updateDateTime
+            onDateTimeUpdated = viewModel::updateDateTime,
+            onImageSelect = {
+                val type = context.contentResolver.getType(it)?.split("/")?.last() ?: "jpg"
+                Log.d("DEBUG-MSG", "${this::class.java.simpleName}: URI -> $it")
+                Log.d("DEBUG-MSG", "${this::class.java.simpleName}: URI type -> $type")
+                viewModel.addImage(
+                    image = it,
+                    imageType = type
+                )
+            },
+            onImageDeleteClicked = { galleryState.removeImage(it) }
         )
     }
 }

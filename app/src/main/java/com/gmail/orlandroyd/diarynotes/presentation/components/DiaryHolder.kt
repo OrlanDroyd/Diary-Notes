@@ -1,5 +1,7 @@
 package com.gmail.orlandroyd.diarynotes.presentation.components
 
+import android.net.Uri
+import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
@@ -24,7 +26,9 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -32,6 +36,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -43,6 +48,7 @@ import com.gmail.orlandroyd.diarynotes.R
 import com.gmail.orlandroyd.diarynotes.model.Diary
 import com.gmail.orlandroyd.diarynotes.model.Mood
 import com.gmail.orlandroyd.diarynotes.ui.theme.Elevation
+import com.gmail.orlandroyd.diarynotes.util.fetchImagesFromFirebase
 import com.gmail.orlandroyd.diarynotes.util.toInstant
 import io.realm.kotlin.ext.realmListOf
 import java.time.Instant
@@ -58,6 +64,36 @@ fun DiaryHolder(
     val localDensity = LocalDensity.current
     var componentHeight by remember { mutableStateOf(0.dp) }
     var isGalleryOpened by remember { mutableStateOf(false) }
+    var isGalleryLoading by remember { mutableStateOf(false) }
+    val downloadedImages = remember { mutableStateListOf<Uri>() }
+    val context = LocalContext.current
+
+    LaunchedEffect(isGalleryOpened) {
+        if (isGalleryOpened && downloadedImages.isEmpty()) {
+            isGalleryLoading = true
+            fetchImagesFromFirebase(
+                remoteImagePaths = diary.images,
+                onImageDownload = { image ->
+                    downloadedImages.add(image)
+                },
+                onImageDownloadFailed = { exception ->
+                    Toast.makeText(
+                        context,
+                        "Images not upload yet. Wait a little bit, or try uploading again",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    isGalleryLoading = false
+                    isGalleryOpened = false
+                },
+                onReadyToDisplay = {
+                    isGalleryLoading = false
+                    isGalleryOpened = true
+                }
+
+            )
+        }
+    }
+
     Row(modifier = Modifier
         .clickable(
             indication = null,
@@ -94,14 +130,14 @@ fun DiaryHolder(
                 if (diary.images.isNotEmpty()) {
                     ShowGalleryButton(
                         galleryOpened = isGalleryOpened,
-                        galleryLoading = false,
+                        galleryLoading = isGalleryLoading,
                         onClick = {
                             isGalleryOpened = !isGalleryOpened
                         }
                     )
                 }
                 AnimatedVisibility(
-                    visible = isGalleryOpened,
+                    visible = isGalleryOpened && !isGalleryLoading,
                     enter = fadeIn() + expandVertically(
                         animationSpec = spring(
                             dampingRatio = Spring.DampingRatioMediumBouncy,
@@ -110,7 +146,7 @@ fun DiaryHolder(
                     )
                 ) {
                     Column(modifier = Modifier.padding(all = 14.dp)) {
-                        Gallery(images = diary.images)
+                        Gallery(images = downloadedImages)
                     }
                 }
             }

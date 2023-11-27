@@ -31,4 +31,5 @@
     <string name="fields_cannot_be_empty">Fields cannot be empty</string>
     <string name="close_icon">Close Icon</string>
     <string name="unknown">Unknown</string>
+    <string name="add_icon">Add Icon</string>
 </resources>
