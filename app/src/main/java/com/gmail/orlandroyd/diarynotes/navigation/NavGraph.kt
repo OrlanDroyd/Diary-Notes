@@ -289,6 +289,9 @@ fun NavGraphBuilder.writeRoute(
                     image = it,
                     imageType = type
                 )
+            },
+            onImageDeleteClicked = {
+
             }
         )
     }

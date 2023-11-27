@@ -40,6 +40,7 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.gmail.orlandroyd.diarynotes.R
 import com.gmail.orlandroyd.diarynotes.model.Diary
+import com.gmail.orlandroyd.diarynotes.model.GalleryImage
 import com.gmail.orlandroyd.diarynotes.model.GalleryState
 import com.gmail.orlandroyd.diarynotes.model.Mood
 import com.gmail.orlandroyd.diarynotes.presentation.components.GalleryUploader
@@ -59,7 +60,8 @@ fun WriteContent(
     onDescriptionChange: (String) -> Unit,
     paddingValues: PaddingValues,
     onSaveClicked: (Diary) -> Unit,
-    onImageSelect: (Uri) -> Unit
+    onImageSelect: (Uri) -> Unit,
+    onImageClicked: (GalleryImage) -> Unit,
 ) {
     val scrollState = rememberScrollState()
     val scope = rememberCoroutineScope()
@@ -167,7 +169,7 @@ fun WriteContent(
                 galleryState = galleryState,
                 onAddClick = { focusManager.clearFocus() },
                 onImageSelect = onImageSelect,
-                onImageClicked = { /*TODO*/ }
+                onImageClicked = onImageClicked
             )
 
             Spacer(modifier = Modifier.height(12.dp))
