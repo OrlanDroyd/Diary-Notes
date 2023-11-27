@@ -2,6 +2,7 @@ package com.gmail.orlandroyd.diarynotes.di
 
 import android.content.Context
 import androidx.room.Room
+import com.gmail.orlandroyd.diarynotes.data.database.ImageToDeleteDao
 import com.gmail.orlandroyd.diarynotes.data.database.ImageToUploadDao
 import com.gmail.orlandroyd.diarynotes.data.database.ImagesDatabase
 import com.gmail.orlandroyd.diarynotes.util.Constants.IMAGES_DATABASE
@@ -31,4 +32,9 @@ object DatabaseModule {
     @Singleton
     fun provideImageToUploadDao(database: ImagesDatabase): ImageToUploadDao =
         database.imagesToUploadDao()
+
+    @Provides
+    @Singleton
+    fun provideImageToDeleteDao(database: ImagesDatabase): ImageToDeleteDao =
+        database.imagesToDeleteDao()
 }
