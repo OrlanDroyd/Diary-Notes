@@ -166,9 +166,9 @@ fun NavGraphBuilder.homeRoute(
                     drawerState.open()
                 }
             },
-//            dateIsSelected = viewModel.dateIsSelected,
-//            onDateSelected = { viewModel.getDiaries(zonedDateTime = it) },
-//            onDateReset = { viewModel.getDiaries() },
+            dateIsSelected = viewModel.dateIsSelected,
+            onDateSelected = viewModel::getDiaries,
+            onDateReset = viewModel::getDiaries,
             onSignOutClicked = { signOutDialogOpened = true },
             onDeleteAllClicked = { deleteAllDialogOpened = true },
             navigateToWrite = navigateToWrite,
