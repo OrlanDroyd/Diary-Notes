@@ -8,13 +8,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.gmail.orlandroyd.diarynotes.connectivity.ConnectivityObserver
-import com.gmail.orlandroyd.diarynotes.connectivity.NetworkConnectivityObserver
+import com.gmail.orlandroyd.util.connectivity.ConnectivityObserver
+import com.gmail.orlandroyd.util.connectivity.NetworkConnectivityObserver
 import com.gmail.orlandroyd.diarynotes.data.database.ImageToDeleteDao
 import com.gmail.orlandroyd.diarynotes.data.database.entity.ImageToDelete
 import com.gmail.orlandroyd.diarynotes.data.repository.Diaries
 import com.gmail.orlandroyd.diarynotes.data.repository.MongoDB
-import com.gmail.orlandroyd.diarynotes.model.RequestState
+import com.gmail.orlandroyd.util.model.RequestState
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.storage.FirebaseStorage
 import dagger.hilt.android.lifecycle.HiltViewModel

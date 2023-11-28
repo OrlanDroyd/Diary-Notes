@@ -13,11 +13,11 @@ import com.gmail.orlandroyd.diarynotes.data.database.ImageToUploadDao
 import com.gmail.orlandroyd.diarynotes.data.database.entity.ImageToDelete
 import com.gmail.orlandroyd.diarynotes.data.database.entity.ImageToUpload
 import com.gmail.orlandroyd.diarynotes.data.repository.MongoDB
-import com.gmail.orlandroyd.diarynotes.model.Diary
+import com.gmail.orlandroyd.util.model.Diary
 import com.gmail.orlandroyd.diarynotes.model.GalleryImage
 import com.gmail.orlandroyd.diarynotes.model.GalleryState
-import com.gmail.orlandroyd.diarynotes.model.Mood
-import com.gmail.orlandroyd.diarynotes.model.RequestState
+import com.gmail.orlandroyd.util.model.Mood
+import com.gmail.orlandroyd.util.model.RequestState
 import com.gmail.orlandroyd.diarynotes.util.Constants.WRITE_SCREEN_ARGUMENT_KEY
 import com.gmail.orlandroyd.diarynotes.util.fetchImagesFromFirebase
 import com.gmail.orlandroyd.diarynotes.util.toRealmInstant

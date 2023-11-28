@@ -16,3 +16,5 @@ dependencyResolutionManagement {
 
 rootProject.name = "Diary Notes"
 include(":app")
+include(":core:ui")
+include(":core:util")

@@ -12,7 +12,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.gmail.orlandroyd.diarynotes.R
-import com.gmail.orlandroyd.diarynotes.presentation.components.GoogleButton
+import com.gmail.orlandroyd.ui.components.GoogleButton
 
 @Composable
 fun AuthenticationContent(

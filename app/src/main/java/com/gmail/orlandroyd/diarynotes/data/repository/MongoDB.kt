@@ -1,7 +1,7 @@
 package com.gmail.orlandroyd.diarynotes.data.repository
 
-import com.gmail.orlandroyd.diarynotes.model.Diary
-import com.gmail.orlandroyd.diarynotes.model.RequestState
+import com.gmail.orlandroyd.util.model.Diary
+import com.gmail.orlandroyd.util.model.RequestState
 import com.gmail.orlandroyd.diarynotes.util.Constants.APP_ID
 import com.gmail.orlandroyd.diarynotes.util.toInstant
 import io.realm.kotlin.Realm

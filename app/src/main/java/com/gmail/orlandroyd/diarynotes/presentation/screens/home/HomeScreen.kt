@@ -42,7 +42,7 @@ import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import com.gmail.orlandroyd.diarynotes.R
 import com.gmail.orlandroyd.diarynotes.data.repository.Diaries
-import com.gmail.orlandroyd.diarynotes.model.RequestState
+import com.gmail.orlandroyd.util.model.RequestState
 import java.time.ZonedDateTime
 
 @OptIn(ExperimentalMaterial3Api::class)

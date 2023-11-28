@@ -1,7 +1,7 @@
 package com.gmail.orlandroyd.diarynotes.data.repository
 
-import com.gmail.orlandroyd.diarynotes.model.Diary
-import com.gmail.orlandroyd.diarynotes.model.RequestState
+import com.gmail.orlandroyd.util.model.Diary
+import com.gmail.orlandroyd.util.model.RequestState
 import kotlinx.coroutines.flow.Flow
 import org.mongodb.kbson.ObjectId
 import java.time.LocalDate

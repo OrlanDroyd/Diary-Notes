@@ -39,11 +39,11 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.gmail.orlandroyd.diarynotes.R
-import com.gmail.orlandroyd.diarynotes.model.Diary
+import com.gmail.orlandroyd.util.model.Diary
 import com.gmail.orlandroyd.diarynotes.model.GalleryImage
 import com.gmail.orlandroyd.diarynotes.model.GalleryState
-import com.gmail.orlandroyd.diarynotes.model.Mood
-import com.gmail.orlandroyd.diarynotes.presentation.components.GalleryUploader
+import com.gmail.orlandroyd.util.model.Mood
+import com.gmail.orlandroyd.ui.components.GalleryUploader
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.PagerState

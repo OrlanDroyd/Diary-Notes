@@ -13,10 +13,10 @@ import com.gmail.orlandroyd.diarynotes.data.database.ImageToDeleteDao
 import com.gmail.orlandroyd.diarynotes.data.database.ImageToUploadDao
 import com.gmail.orlandroyd.diarynotes.navigation.Screen
 import com.gmail.orlandroyd.diarynotes.navigation.SetupNavGraph
-import com.gmail.orlandroyd.diarynotes.ui.theme.DiaryNotesTheme
 import com.gmail.orlandroyd.diarynotes.util.Constants.APP_ID
 import com.gmail.orlandroyd.diarynotes.util.retryDeletingImageFromFirebase
 import com.gmail.orlandroyd.diarynotes.util.retryUploadingImageToFirebase
+import com.gmail.orlandroyd.ui.theme.DiaryNotesTheme
 import com.google.firebase.FirebaseApp
 import dagger.hilt.android.AndroidEntryPoint
 import io.realm.kotlin.mongodb.App

@@ -23,9 +23,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.gmail.orlandroyd.diarynotes.R
-import com.gmail.orlandroyd.diarynotes.model.Mood
-import com.gmail.orlandroyd.diarynotes.model.RequestState
-import com.gmail.orlandroyd.diarynotes.presentation.components.DisplayAlertDialog
+import com.gmail.orlandroyd.util.model.Mood
+import com.gmail.orlandroyd.util.model.RequestState
+import com.gmail.orlandroyd.ui.components.DisplayAlertDialog
 import com.gmail.orlandroyd.diarynotes.presentation.screens.auth.AuthenticationScreen
 import com.gmail.orlandroyd.diarynotes.presentation.screens.auth.AuthenticationViewModel
 import com.gmail.orlandroyd.diarynotes.presentation.screens.home.HomeScreen

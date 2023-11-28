@@ -25,8 +25,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.gmail.orlandroyd.diarynotes.R
-import com.gmail.orlandroyd.diarynotes.model.Diary
-import com.gmail.orlandroyd.diarynotes.presentation.components.DiaryHolder
+import com.gmail.orlandroyd.util.model.Diary
+import com.gmail.orlandroyd.ui.components.DiaryHolder
 import java.time.LocalDate
 
 @OptIn(ExperimentalFoundationApi::class)

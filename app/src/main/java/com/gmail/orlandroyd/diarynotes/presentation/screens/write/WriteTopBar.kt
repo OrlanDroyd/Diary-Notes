@@ -31,8 +31,8 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import com.gmail.orlandroyd.diarynotes.R
-import com.gmail.orlandroyd.diarynotes.model.Diary
-import com.gmail.orlandroyd.diarynotes.presentation.components.DisplayAlertDialog
+import com.gmail.orlandroyd.util.model.Diary
+import com.gmail.orlandroyd.ui.components.DisplayAlertDialog
 import com.gmail.orlandroyd.diarynotes.util.toInstant
 import com.maxkeppeker.sheets.core.models.base.rememberSheetState
 import com.maxkeppeler.sheets.calendar.CalendarDialog
