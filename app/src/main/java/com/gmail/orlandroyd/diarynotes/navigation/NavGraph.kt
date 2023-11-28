@@ -22,6 +22,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.gmail.orlandroyd.diarynotes.R
 import com.gmail.orlandroyd.diarynotes.model.Mood
 import com.gmail.orlandroyd.diarynotes.model.RequestState
 import com.gmail.orlandroyd.diarynotes.presentation.components.DisplayAlertDialog
@@ -143,7 +144,7 @@ fun NavGraphBuilder.homeRoute(
     onDataLoaded: () -> Unit
 ) {
     composable(route = Screen.Home.route) {
-        val viewModel: HomeViewModel = viewModel()
+        val viewModel: HomeViewModel = hiltViewModel()
         val diaries by viewModel.diaries
         val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
         val scope = rememberCoroutineScope()
@@ -165,11 +166,11 @@ fun NavGraphBuilder.homeRoute(
                     drawerState.open()
                 }
             },
-//            dateIsSelected = viewModel.dateIsSelected,
-//            onDateSelected = { viewModel.getDiaries(zonedDateTime = it) },
-//            onDateReset = { viewModel.getDiaries() },
+            dateIsSelected = viewModel.dateIsSelected,
+            onDateSelected = viewModel::getDiaries,
+            onDateReset = viewModel::getDiaries,
             onSignOutClicked = { signOutDialogOpened = true },
-//            onDeleteAllClicked = { deleteAllDialogOpened = true },
+            onDeleteAllClicked = { deleteAllDialogOpened = true },
             navigateToWrite = navigateToWrite,
             navigateToWriteWithArgs = navigateToWriteWithArgs
         )
@@ -192,38 +193,38 @@ fun NavGraphBuilder.homeRoute(
             }
         )
 
-//        DisplayAlertDialog(
-//            title = "Delete All Diaries",
-//            message = "Are you sure you want to permanently delete all your diaries?",
-//            dialogOpened = deleteAllDialogOpened,
-//            onDialogClosed = { deleteAllDialogOpened = false },
-//            onYesClicked = {
-//                viewModel.deleteAllDiaries(
-//                    onSuccess = {
-//                        Toast.makeText(
-//                            context,
-//                            "All Diaries Deleted.",
-//                            Toast.LENGTH_SHORT
-//                        ).show()
-//                        scope.launch {
-//                            drawerState.close()
-//                        }
-//                    },
-//                    onError = {
-//                        Toast.makeText(
-//                            context,
-//                            if (it.message == "No Internet Connection.")
-//                                "We need an Internet Connection for this operation."
-//                            else it.message,
-//                            Toast.LENGTH_SHORT
-//                        ).show()
-//                        scope.launch {
-//                            drawerState.close()
-//                        }
-//                    }
-//                )
-//            }
-//        )
+        DisplayAlertDialog(
+            title = context.getString(R.string.delete_all_diaries),
+            message = context.getString(R.string.are_you_sure_you_want_to_permanently_delete_all_your_diaries),
+            dialogOpened = deleteAllDialogOpened,
+            onDialogClosed = { deleteAllDialogOpened = false },
+            onYesClicked = {
+                viewModel.deleteAllDiaries(
+                    onSuccess = {
+                        Toast.makeText(
+                            context,
+                            context.getString(R.string.all_diaries_deleted),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        scope.launch {
+                            drawerState.close()
+                        }
+                    },
+                    onError = {
+                        Toast.makeText(
+                            context,
+                            if (it.message == "No Internet Connection.") // value of custom Exception
+                                context.getString(R.string.we_need_an_internet_connection_for_this_operation)
+                            else it.message,
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        scope.launch {
+                            drawerState.close()
+                        }
+                    }
+                )
+            }
+        )
     }
 }
 
