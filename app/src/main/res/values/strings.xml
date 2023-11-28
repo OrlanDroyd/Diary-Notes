@@ -32,4 +32,9 @@
     <string name="close_icon">Close Icon</string>
     <string name="unknown">Unknown</string>
     <string name="add_icon">Add Icon</string>
+    <string name="delete_all">Delete all</string>
+    <string name="delete_all_diaries">Delete All Diaries</string>
+    <string name="are_you_sure_you_want_to_permanently_delete_all_your_diaries">Are you sure you want to permanently delete all your diaries?</string>
+    <string name="all_diaries_deleted">All Diaries Deleted.</string>
+    <string name="we_need_an_internet_connection_for_this_operation">We need an Internet Connection for this operation.</string>
 </resources>
