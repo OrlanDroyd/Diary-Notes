@@ -1,4 +1,4 @@
-package com.gmail.orlandroyd.ui.components
+package com.gmail.orlandroyd.util
 
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult

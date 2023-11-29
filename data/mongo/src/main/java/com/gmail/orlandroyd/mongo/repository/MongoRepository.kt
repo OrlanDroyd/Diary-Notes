@@ -1,4 +1,4 @@
-package com.gmail.orlandroyd.diarynotes.data.repository
+package com.gmail.orlandroyd.mongo.repository
 
 import com.gmail.orlandroyd.util.model.Diary
 import com.gmail.orlandroyd.util.model.RequestState

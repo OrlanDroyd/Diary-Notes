@@ -1,19 +1,17 @@
 package com.gmail.orlandroyd.diarynotes.presentation.screens.home
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.gmail.orlandroyd.mongo.database.ImageToDeleteDao
+import com.gmail.orlandroyd.mongo.database.entity.ImageToDelete
+import com.gmail.orlandroyd.mongo.repository.Diaries
+import com.gmail.orlandroyd.mongo.repository.MongoDB
 import com.gmail.orlandroyd.util.connectivity.ConnectivityObserver
 import com.gmail.orlandroyd.util.connectivity.NetworkConnectivityObserver
-import com.gmail.orlandroyd.diarynotes.data.database.ImageToDeleteDao
-import com.gmail.orlandroyd.diarynotes.data.database.entity.ImageToDelete
-import com.gmail.orlandroyd.diarynotes.data.repository.Diaries
-import com.gmail.orlandroyd.diarynotes.data.repository.MongoDB
 import com.gmail.orlandroyd.util.model.RequestState
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.storage.FirebaseStorage
@@ -26,7 +24,6 @@ import kotlinx.coroutines.withContext
 import java.time.ZonedDateTime
 import javax.inject.Inject
 
-@RequiresApi(Build.VERSION_CODES.N)
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val connectivity: NetworkConnectivityObserver,

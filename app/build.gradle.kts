@@ -6,7 +6,7 @@ plugins {
     id("dagger.hilt.android.plugin")
     id("io.realm.kotlin")
     id("com.google.gms.google-services")
-//    id("com.google.devtools.ksp")
+    id("com.google.devtools.ksp")
 }
 
 android {
@@ -58,84 +58,34 @@ android {
 
 dependencies {
 
-    implementation("androidx.core:core-ktx:1.12.0")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
-    implementation("androidx.activity:activity-compose:1.8.0")
-    implementation(platform("androidx.compose:compose-bom:2023.10.00"))
-    implementation("androidx.compose.ui:ui")
-    implementation("androidx.compose.ui:ui-graphics")
-    implementation("androidx.compose.ui:ui-tooling-preview")
-    implementation("androidx.compose.material3:material3")
-    implementation("androidx.compose.foundation:foundation")
-    implementation("androidx.compose.foundation:foundation-layout")
-
     // Compose Navigation
-    implementation("androidx.navigation:navigation-compose:2.7.4")
+    implementation(libs.navigation.compose)
 
     // Firebase
-    implementation("com.google.firebase:firebase-auth-ktx:22.2.0")
-    implementation("com.google.firebase:firebase-storage-ktx:20.3.0")
+    implementation(libs.firebase.storage)
 
     // Room components
-//    implementation("androidx.room:room-runtime:2.5.2")
-//    // To use Kotlin Symbol Processing (KSP)
-//    ksp("androidx.room:room-compiler:2.5.2")
-//    // optional - Kotlin Extensions and Coroutines support for Room
-//    implementation("androidx.room:room-ktx:2.5.2")
-    implementation("androidx.room:room-runtime:2.5.2")
-    implementation("androidx.room:room-ktx:2.5.2")
-    //noinspection KaptUsageInsteadOfKsp
-    kapt("androidx.room:room-compiler:2.5.2")
-
-    // Runtime Compose
-    implementation("androidx.lifecycle:lifecycle-runtime-compose:2.6.2")
+    implementation(libs.room.runtime)
+    ksp(libs.room.compiler)
+    implementation(libs.room.ktx)
 
     // Splash API
-    implementation("androidx.core:core-splashscreen:1.0.1")
+    implementation(libs.splash.api)
 
     // Mongo DB Realm
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.0")
-    implementation("io.realm.kotlin:library-sync:1.10.0")
-
-    // Coil
-    implementation("io.coil-kt:coil-compose:2.3.0")
-
-    // Pager - Accompanist
-    implementation("com.google.accompanist:accompanist-pager:0.27.0")
-
-    // Date-Time Picker
-    implementation("com.maxkeppeler.sheets-compose-dialogs:core:1.0.2")
-
-    // CALENDAR
-    implementation("com.maxkeppeler.sheets-compose-dialogs:calendar:1.0.2")
-
-    // CLOCK
-    implementation("com.maxkeppeler.sheets-compose-dialogs:clock:1.0.2")
-
-    // Message Bar Compose
-    implementation("com.github.stevdza-san:MessageBarCompose:1.0.5")
-
-    // One-Tap Compose
-    implementation("com.github.stevdza-san:OneTapCompose:1.0.3")
-
-    // Desugar JDK
-    //noinspection GradleDependency
-    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:1.2.0")
+    implementation(libs.realm.sync)
 
     // Dagger Hilt
-    implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
-    implementation("com.google.dagger:hilt-android:2.45")
-    kapt("com.google.dagger:hilt-android-compiler:2.45")
-    kapt("androidx.hilt:hilt-compiler:1.0.0")
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.compiler)
 
-    testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.1.5")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
-    androidTestImplementation(platform("androidx.compose:compose-bom:2023.10.00"))
-    androidTestImplementation("androidx.compose.ui:ui-test-junit4")
-    debugImplementation("androidx.compose.ui:ui-tooling")
-    debugImplementation("androidx.compose.ui:ui-test-manifest")
+    // Desugar JDK
+    coreLibraryDesugaring(libs.desugar.jdk)
 
     implementation(project(":core:ui"))
     implementation(project(":core:util"))
+    implementation(project(":data:mongo"))
+//    implementation(project(":feature:auth"))
+//    implementation(project(":feature:home"))
+//    implementation(project(":feature:write"))
 }

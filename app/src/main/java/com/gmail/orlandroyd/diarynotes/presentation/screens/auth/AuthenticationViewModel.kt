@@ -3,7 +3,7 @@ package com.gmail.orlandroyd.diarynotes.presentation.screens.auth
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.gmail.orlandroyd.diarynotes.util.Constants.APP_ID
+import com.gmail.orlandroyd.util.Constants.APP_ID
 import io.realm.kotlin.mongodb.App
 import io.realm.kotlin.mongodb.Credentials
 import kotlinx.coroutines.Dispatchers

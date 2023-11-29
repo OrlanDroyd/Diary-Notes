@@ -1,10 +1,10 @@
-package com.gmail.orlandroyd.diarynotes.data.database
+package com.gmail.orlandroyd.mongo.database
 
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.gmail.orlandroyd.diarynotes.data.database.entity.ImageToDelete
+import com.gmail.orlandroyd.mongo.database.entity.ImageToDelete
 
 @Dao
 interface ImageToDeleteDao {

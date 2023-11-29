@@ -47,15 +47,9 @@ android {
 
 dependencies {
 
-    implementation(platform(libs.compose.bom))
-    implementation(libs.ui.tooling.preview)
-    implementation(libs.core.ktx)
-    implementation(libs.firebase.storage)
-    implementation(libs.realm.sync)
-    implementation(libs.coroutines.core)
     implementation(libs.activity.compose)
     implementation(libs.material3.compose)
-    implementation(libs.coil)
-
-    implementation(project(":core:util"))
+    implementation(libs.ui.tooling.preview)
+    implementation(libs.realm.sync)
+    implementation(libs.coroutines.core)
 }

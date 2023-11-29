@@ -1,11 +1,11 @@
-package com.gmail.orlandroyd.diarynotes.data.database
+package com.gmail.orlandroyd.mongo.database
 
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.gmail.orlandroyd.diarynotes.data.database.entity.ImageToUpload
-import com.gmail.orlandroyd.diarynotes.util.Constants.IMAGE_TO_UPLOAD_TABLE
+import com.gmail.orlandroyd.mongo.database.entity.ImageToUpload
+import com.gmail.orlandroyd.util.Constants.IMAGE_TO_UPLOAD_TABLE
 
 @Dao
 interface ImageToUploadDao {

@@ -3,6 +3,8 @@ package com.gmail.orlandroyd.util
 import android.net.Uri
 import android.util.Log
 import androidx.core.net.toUri
+import com.gmail.orlandroyd.mongo.database.entity.ImageToDelete
+import com.gmail.orlandroyd.mongo.database.entity.ImageToUpload
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.storageMetadata
 import io.realm.kotlin.types.RealmInstant

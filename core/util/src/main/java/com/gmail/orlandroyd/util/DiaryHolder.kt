@@ -1,4 +1,4 @@
-package com.gmail.orlandroyd.ui.components
+package com.gmail.orlandroyd.util
 
 import android.net.Uri
 import android.widget.Toast
@@ -46,10 +46,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.gmail.orlandroyd.ui.R
 import com.gmail.orlandroyd.ui.theme.Elevation
-import com.gmail.orlandroyd.util.fetchImagesFromFirebase
 import com.gmail.orlandroyd.util.model.Diary
 import com.gmail.orlandroyd.util.model.Mood
-import com.gmail.orlandroyd.util.toInstant
 import io.realm.kotlin.ext.realmListOf
 import java.time.Instant
 import java.time.ZoneId

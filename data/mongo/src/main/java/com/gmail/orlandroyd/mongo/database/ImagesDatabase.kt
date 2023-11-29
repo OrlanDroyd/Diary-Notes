@@ -1,9 +1,9 @@
-package com.gmail.orlandroyd.diarynotes.data.database
+package com.gmail.orlandroyd.mongo.database
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import com.gmail.orlandroyd.diarynotes.data.database.entity.ImageToDelete
-import com.gmail.orlandroyd.diarynotes.data.database.entity.ImageToUpload
+import com.gmail.orlandroyd.mongo.database.entity.ImageToDelete
+import com.gmail.orlandroyd.mongo.database.entity.ImageToUpload
 
 @Database(
     entities = [ImageToUpload::class, ImageToDelete::class],

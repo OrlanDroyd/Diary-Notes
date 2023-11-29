@@ -1,11 +1,13 @@
+@Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
 plugins {
-    id("com.android.application")
-    id("org.jetbrains.kotlin.android")
+    alias(libs.plugins.com.android.library)
+    alias(libs.plugins.org.jetbrains.kotlin.android)
     id("io.realm.kotlin")
+    id("com.google.devtools.ksp")
 }
 
 android {
-    namespace = "com.gmail.orlandroyd.util"
+    namespace = "com.gmail.orlandroyd.mongo"
     compileSdk = ProjectConfig.compileSdk
 
     defaultConfig {
@@ -32,12 +34,6 @@ android {
     kotlinOptions {
         jvmTarget = "17"
     }
-    buildFeatures {
-        compose = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = ProjectConfig.extensionVersion
-    }
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
@@ -47,16 +43,12 @@ android {
 
 dependencies {
 
-    implementation(platform(libs.compose.bom))
-    implementation(libs.ui.tooling.preview)
     implementation(libs.core.ktx)
-    implementation(libs.firebase.storage)
-    implementation(libs.realm.sync)
     implementation(libs.coroutines.core)
-    implementation(libs.activity.compose)
-    implementation(libs.material3.compose)
-    implementation(libs.coil)
+    implementation(libs.realm.sync)
+    implementation(libs.room.runtime)
+    implementation(libs.room.ktx)
+    ksp(libs.room.compiler)
 
-    implementation(project(":core:ui"))
-    implementation(project(":data:mongo"))
+    implementation(project(":core:util"))
 }

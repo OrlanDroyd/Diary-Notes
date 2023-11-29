@@ -1,9 +1,7 @@
 package com.gmail.orlandroyd.diarynotes.navigation
 
-import android.os.Build
 import android.util.Log
 import android.widget.Toast
-import androidx.annotation.RequiresApi
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -14,7 +12,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
@@ -23,17 +20,18 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.gmail.orlandroyd.diarynotes.R
-import com.gmail.orlandroyd.util.model.Mood
-import com.gmail.orlandroyd.util.model.RequestState
-import com.gmail.orlandroyd.ui.components.DisplayAlertDialog
 import com.gmail.orlandroyd.diarynotes.presentation.screens.auth.AuthenticationScreen
 import com.gmail.orlandroyd.diarynotes.presentation.screens.auth.AuthenticationViewModel
 import com.gmail.orlandroyd.diarynotes.presentation.screens.home.HomeScreen
 import com.gmail.orlandroyd.diarynotes.presentation.screens.home.HomeViewModel
 import com.gmail.orlandroyd.diarynotes.presentation.screens.write.WriteScreen
 import com.gmail.orlandroyd.diarynotes.presentation.screens.write.WriteViewModel
-import com.gmail.orlandroyd.diarynotes.util.Constants.APP_ID
-import com.gmail.orlandroyd.diarynotes.util.Constants.WRITE_SCREEN_ARGUMENT_KEY
+import com.gmail.orlandroyd.ui.components.DisplayAlertDialog
+import com.gmail.orlandroyd.util.Constants.APP_ID
+import com.gmail.orlandroyd.util.Constants.WRITE_SCREEN_ARGUMENT_KEY
+import com.gmail.orlandroyd.util.Screen
+import com.gmail.orlandroyd.util.model.Mood
+import com.gmail.orlandroyd.util.model.RequestState
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.rememberPagerState
 import com.stevdzasan.messagebar.rememberMessageBarState
@@ -43,7 +41,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-@RequiresApi(Build.VERSION_CODES.N)
 @Composable
 fun SetupNavGraph(
     startDestination: String,
@@ -136,7 +133,6 @@ fun NavGraphBuilder.authenticationRoute(
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.N)
 fun NavGraphBuilder.homeRoute(
     navigateToWrite: () -> Unit,
     navigateToWriteWithArgs: (String) -> Unit,
@@ -228,7 +224,6 @@ fun NavGraphBuilder.homeRoute(
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.N)
 @OptIn(ExperimentalPagerApi::class)
 fun NavGraphBuilder.writeRoute(
     onBackPressed: () -> Unit

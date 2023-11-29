@@ -1,22 +1,20 @@
 package com.gmail.orlandroyd.diarynotes
 
-import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.annotation.RequiresApi
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.rememberNavController
-import com.gmail.orlandroyd.diarynotes.data.database.ImageToDeleteDao
-import com.gmail.orlandroyd.diarynotes.data.database.ImageToUploadDao
-import com.gmail.orlandroyd.diarynotes.navigation.Screen
 import com.gmail.orlandroyd.diarynotes.navigation.SetupNavGraph
-import com.gmail.orlandroyd.diarynotes.util.Constants.APP_ID
-import com.gmail.orlandroyd.diarynotes.util.retryDeletingImageFromFirebase
-import com.gmail.orlandroyd.diarynotes.util.retryUploadingImageToFirebase
+import com.gmail.orlandroyd.mongo.database.ImageToDeleteDao
+import com.gmail.orlandroyd.mongo.database.ImageToUploadDao
 import com.gmail.orlandroyd.ui.theme.DiaryNotesTheme
+import com.gmail.orlandroyd.util.Constants.APP_ID
+import com.gmail.orlandroyd.util.Screen
+import com.gmail.orlandroyd.util.retryDeletingImageFromFirebase
+import com.gmail.orlandroyd.util.retryUploadingImageToFirebase
 import com.google.firebase.FirebaseApp
 import dagger.hilt.android.AndroidEntryPoint
 import io.realm.kotlin.mongodb.App
@@ -36,7 +34,6 @@ class MainActivity : ComponentActivity() {
 
     private var keepSplashOpen = true
 
-    @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         installSplashScreen().setKeepOnScreenCondition {

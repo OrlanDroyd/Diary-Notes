@@ -8,19 +8,19 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.gmail.orlandroyd.diarynotes.data.database.ImageToDeleteDao
-import com.gmail.orlandroyd.diarynotes.data.database.ImageToUploadDao
-import com.gmail.orlandroyd.diarynotes.data.database.entity.ImageToDelete
-import com.gmail.orlandroyd.diarynotes.data.database.entity.ImageToUpload
-import com.gmail.orlandroyd.diarynotes.data.repository.MongoDB
+import com.gmail.orlandroyd.mongo.database.ImageToDeleteDao
+import com.gmail.orlandroyd.mongo.database.ImageToUploadDao
+import com.gmail.orlandroyd.mongo.database.entity.ImageToDelete
+import com.gmail.orlandroyd.mongo.database.entity.ImageToUpload
+import com.gmail.orlandroyd.mongo.repository.MongoDB
+import com.gmail.orlandroyd.ui.GalleryImage
+import com.gmail.orlandroyd.ui.GalleryState
+import com.gmail.orlandroyd.util.Constants.WRITE_SCREEN_ARGUMENT_KEY
+import com.gmail.orlandroyd.util.fetchImagesFromFirebase
 import com.gmail.orlandroyd.util.model.Diary
-import com.gmail.orlandroyd.diarynotes.model.GalleryImage
-import com.gmail.orlandroyd.diarynotes.model.GalleryState
 import com.gmail.orlandroyd.util.model.Mood
 import com.gmail.orlandroyd.util.model.RequestState
-import com.gmail.orlandroyd.diarynotes.util.Constants.WRITE_SCREEN_ARGUMENT_KEY
-import com.gmail.orlandroyd.diarynotes.util.fetchImagesFromFirebase
-import com.gmail.orlandroyd.diarynotes.util.toRealmInstant
+import com.gmail.orlandroyd.util.toRealmInstant
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
@@ -249,7 +249,7 @@ class WriteViewModel @Inject constructor(
                     }
             }
         } else {
-            galleryState.imagesToBeDeleted.map { it.remoteImagePath }.forEach {remotePath ->
+            galleryState.imagesToBeDeleted.map { it.remoteImagePath }.forEach { remotePath ->
                 storage.child(remotePath).delete()
                     .addOnFailureListener {
                         viewModelScope.launch(Dispatchers.IO) {

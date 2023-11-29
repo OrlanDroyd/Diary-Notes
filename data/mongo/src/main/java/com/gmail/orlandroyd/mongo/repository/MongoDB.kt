@@ -1,9 +1,9 @@
-package com.gmail.orlandroyd.diarynotes.data.repository
+package com.gmail.orlandroyd.mongo.repository
 
+import com.gmail.orlandroyd.util.Constants.APP_ID
 import com.gmail.orlandroyd.util.model.Diary
 import com.gmail.orlandroyd.util.model.RequestState
-import com.gmail.orlandroyd.diarynotes.util.Constants.APP_ID
-import com.gmail.orlandroyd.diarynotes.util.toInstant
+import com.gmail.orlandroyd.util.toInstant
 import io.realm.kotlin.Realm
 import io.realm.kotlin.ext.query
 import io.realm.kotlin.log.LogLevel

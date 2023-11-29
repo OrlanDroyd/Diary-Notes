@@ -2,8 +2,6 @@ package com.gmail.orlandroyd.diarynotes.presentation.screens.write
 
 import android.annotation.SuppressLint
 import android.net.Uri
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.gestures.detectTransformGestures
 import androidx.compose.foundation.layout.Arrangement
@@ -36,15 +34,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.gmail.orlandroyd.ui.GalleryImage
+import com.gmail.orlandroyd.ui.GalleryState
 import com.gmail.orlandroyd.util.model.Diary
-import com.gmail.orlandroyd.diarynotes.model.GalleryImage
-import com.gmail.orlandroyd.diarynotes.model.GalleryState
 import com.gmail.orlandroyd.util.model.Mood
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.PagerState
 import java.time.ZonedDateTime
 
-@RequiresApi(Build.VERSION_CODES.N)
 @OptIn(ExperimentalPagerApi::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
