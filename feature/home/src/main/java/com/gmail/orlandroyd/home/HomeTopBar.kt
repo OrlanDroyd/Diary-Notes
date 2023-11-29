@@ -1,5 +1,7 @@
-package com.gmail.orlandroyd.diarynotes.presentation.screens.home
+package com.gmail.orlandroyd.home
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.DateRange
@@ -13,7 +15,6 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
-import com.gmail.orlandroyd.diarynotes.R
 import com.maxkeppeker.sheets.core.models.base.rememberSheetState
 import com.maxkeppeler.sheets.calendar.CalendarDialog
 import com.maxkeppeler.sheets.calendar.models.CalendarConfig
@@ -22,6 +23,7 @@ import java.time.LocalTime
 import java.time.ZoneId
 import java.time.ZonedDateTime
 
+@RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeTopBar(
@@ -38,13 +40,13 @@ fun HomeTopBar(
             IconButton(onClick = onMenuClicked) {
                 Icon(
                     imageVector = Icons.Default.Menu,
-                    contentDescription = stringResource(R.string.hamburger_menu_icon),
+                    contentDescription = stringResource(com.gmail.orlandroyd.ui.R.string.hamburger_menu_icon),
                     tint = MaterialTheme.colorScheme.onSurface
                 )
             }
         },
         title = {
-            Text(text = stringResource(R.string.diary))
+            Text(text = stringResource(com.gmail.orlandroyd.ui.R.string.diary))
         },
         actions = {
             if (dateIsSelected) {

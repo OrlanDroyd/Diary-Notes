@@ -1,4 +1,4 @@
-package com.gmail.orlandroyd.diarynotes.presentation.screens.home
+package com.gmail.orlandroyd.home
 
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue

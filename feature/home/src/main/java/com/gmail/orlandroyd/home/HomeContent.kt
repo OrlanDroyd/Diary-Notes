@@ -1,5 +1,7 @@
-package com.gmail.orlandroyd.diarynotes.presentation.screens.home
+package com.gmail.orlandroyd.home
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -24,7 +26,6 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.gmail.orlandroyd.diarynotes.R
 import com.gmail.orlandroyd.util.DiaryHolder
 import com.gmail.orlandroyd.util.model.Diary
 import java.time.LocalDate
@@ -60,6 +61,7 @@ fun HomeContent(
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun DateHeader(localDate: LocalDate) {
     Row(
@@ -109,8 +111,8 @@ fun DateHeader(localDate: LocalDate) {
 
 @Composable
 fun EmptyPage(
-    title: String = stringResource(R.string.empty_diary),
-    subtitle: String = stringResource(R.string.write_something)
+    title: String = stringResource(com.gmail.orlandroyd.ui.R.string.empty_diary),
+    subtitle: String = stringResource(com.gmail.orlandroyd.ui.R.string.write_something)
 ) {
     Column(
         modifier = Modifier
@@ -136,6 +138,7 @@ fun EmptyPage(
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Preview(showBackground = true)
 @Composable
 fun DateHeaderPreview() {

@@ -1,6 +1,5 @@
 package com.gmail.orlandroyd.auth
 
-
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -43,17 +42,17 @@ fun AuthenticationContent(
             ) {
                 Image(
                     modifier = Modifier.size(120.dp),
-                    painter = painterResource(id = R.drawable.google_logo),
+                    painter = painterResource(id = com.gmail.orlandroyd.ui.R.drawable.google_logo),
                     contentDescription = "Google Logo"
                 )
                 Spacer(modifier = Modifier.height(20.dp))
                 Text(
-                    text = stringResource(id = R.string.auth_title),
+                    text = stringResource(id = com.gmail.orlandroyd.ui.R.string.auth_title),
                     fontSize = MaterialTheme.typography.titleLarge.fontSize
                 )
                 Text(
                     color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f),
-                    text = stringResource(id = R.string.auth_subtitle),
+                    text = stringResource(id = com.gmail.orlandroyd.ui.R.string.auth_subtitle),
                     fontSize = MaterialTheme.typography.bodyMedium.fontSize
                 )
             }

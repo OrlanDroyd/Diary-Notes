@@ -1,4 +1,4 @@
-package com.gmail.orlandroyd.diarynotes.presentation.screens.home
+package com.gmail.orlandroyd.home
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
@@ -40,7 +40,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
-import com.gmail.orlandroyd.diarynotes.R
 import com.gmail.orlandroyd.mongo.repository.Diaries
 import com.gmail.orlandroyd.util.model.RequestState
 import java.time.ZonedDateTime
@@ -88,7 +87,7 @@ fun HomeScreen(
                 ) {
                     Icon(
                         imageVector = Icons.Default.Edit,
-                        contentDescription = stringResource(R.string.new_note)
+                        contentDescription = stringResource(com.gmail.orlandroyd.ui.R.string.new_note)
                     )
                 }
             },
@@ -105,9 +104,9 @@ fun HomeScreen(
 
                     is RequestState.Error -> {
                         EmptyPage(
-                            title = stringResource(R.string.error),
+                            title = stringResource(com.gmail.orlandroyd.ui.R.string.error),
                             subtitle = stringResource(
-                                R.string.error_subtitle,
+                                com.gmail.orlandroyd.ui.R.string.error_subtitle,
                                 diaries.error.message.orEmpty()
                             )
                         )
@@ -149,8 +148,8 @@ fun NavigationDrawer(
                 ) {
                     Image(
                         modifier = Modifier.size(250.dp),
-                        painter = painterResource(R.drawable.logo),
-                        contentDescription = stringResource(R.string.logo_image),
+                        painter = painterResource(com.gmail.orlandroyd.ui.R.drawable.logo),
+                        contentDescription = stringResource(com.gmail.orlandroyd.ui.R.string.logo_image),
                     )
                 }
                 // ITEM -> Delete all
@@ -159,12 +158,12 @@ fun NavigationDrawer(
                         Row(modifier = Modifier.padding(horizontal = 12.dp)) {
                             Icon(
                                 imageVector = Icons.Default.Delete,
-                                contentDescription = stringResource(R.string.delete_all),
+                                contentDescription = stringResource(com.gmail.orlandroyd.ui.R.string.delete_all),
                                 tint = MaterialTheme.colorScheme.onSurface,
                             )
                             Spacer(modifier = Modifier.width(12.dp))
                             Text(
-                                text = stringResource(R.string.delete_all),
+                                text = stringResource(com.gmail.orlandroyd.ui.R.string.delete_all),
                                 color = MaterialTheme.colorScheme.onSurface,
                             )
                         }
@@ -177,13 +176,13 @@ fun NavigationDrawer(
                     label = {
                         Row(modifier = Modifier.padding(horizontal = 12.dp)) {
                             Icon(
-                                painter = painterResource(R.drawable.google_logo),
-                                contentDescription = stringResource(R.string.google_logo),
+                                painter = painterResource(com.gmail.orlandroyd.ui.R.drawable.google_logo),
+                                contentDescription = stringResource(com.gmail.orlandroyd.ui.R.string.google_logo),
                                 tint = MaterialTheme.colorScheme.onSurface,
                             )
                             Spacer(modifier = Modifier.width(12.dp))
                             Text(
-                                text = stringResource(R.string.sign_out),
+                                text = stringResource(com.gmail.orlandroyd.ui.R.string.sign_out),
                                 color = MaterialTheme.colorScheme.onSurface,
                             )
                         }
