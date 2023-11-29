@@ -12,16 +12,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.gmail.orlandroyd.auth.navigation.authenticationRoute
 import com.gmail.orlandroyd.diarynotes.R
-import com.gmail.orlandroyd.diarynotes.presentation.screens.auth.AuthenticationScreen
-import com.gmail.orlandroyd.diarynotes.presentation.screens.auth.AuthenticationViewModel
 import com.gmail.orlandroyd.diarynotes.presentation.screens.home.HomeScreen
 import com.gmail.orlandroyd.diarynotes.presentation.screens.home.HomeViewModel
 import com.gmail.orlandroyd.diarynotes.presentation.screens.write.WriteScreen
@@ -34,8 +32,6 @@ import com.gmail.orlandroyd.util.model.Mood
 import com.gmail.orlandroyd.util.model.RequestState
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.rememberPagerState
-import com.stevdzasan.messagebar.rememberMessageBarState
-import com.stevdzasan.onetap.rememberOneTapSignInState
 import io.realm.kotlin.mongodb.App
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -74,60 +70,6 @@ fun SetupNavGraph(
         writeRoute(
             onBackPressed = {
                 navController.popBackStack()
-            }
-        )
-    }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-fun NavGraphBuilder.authenticationRoute(
-    navigateToHome: () -> Unit,
-    onDataLoaded: () -> Unit
-) {
-    composable(route = Screen.Authentication.route) {
-
-        val viewModel: AuthenticationViewModel = viewModel()
-        val authenticated by viewModel.authenticated
-        val loadingState by viewModel.loadingState
-        val oneTapState = rememberOneTapSignInState()
-        val messageBarState = rememberMessageBarState()
-
-        LaunchedEffect(Unit) {
-            onDataLoaded()
-        }
-
-        AuthenticationScreen(
-            authenticated = authenticated,
-            loadingState = loadingState,
-            oneTapState = oneTapState,
-            messageBarState = messageBarState,
-            onButtonClicked = {
-                oneTapState.open()
-                viewModel.setLoading(true)
-            },
-            onSuccessfulFirebaseSignIn = { tokenId ->
-                viewModel.signInWithMongoAtlas(
-                    tokenId = tokenId,
-                    onSuccess = {
-                        messageBarState.addSuccess("Successfully Authenticated!")
-                        viewModel.setLoading(false)
-                    },
-                    onError = {
-                        messageBarState.addError(it)
-                        viewModel.setLoading(false)
-                    }
-                )
-            },
-            onFailedFirebaseSignIn = {
-                messageBarState.addError(it)
-                viewModel.setLoading(false)
-            },
-            onDialogDismissed = { message ->
-                messageBarState.addError(Exception(message))
-                viewModel.setLoading(false)
-            },
-            navigateToHome = {
-                navigateToHome()
             }
         )
     }

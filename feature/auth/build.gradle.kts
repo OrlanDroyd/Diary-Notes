@@ -3,11 +3,10 @@ plugins {
     alias(libs.plugins.com.android.library)
     alias(libs.plugins.org.jetbrains.kotlin.android)
     id("io.realm.kotlin")
-    id("com.google.devtools.ksp")
 }
 
 android {
-    namespace = "com.gmail.orlandroyd.mongo"
+    namespace = "com.gmail.orlandroyd.auth"
     compileSdk = ProjectConfig.compileSdk
 
     defaultConfig {
@@ -33,6 +32,12 @@ android {
     kotlinOptions {
         jvmTarget = "17"
     }
+    buildFeatures {
+        compose = true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion = ProjectConfig.extensionVersion
+    }
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
@@ -42,12 +47,15 @@ android {
 
 dependencies {
 
-    implementation(libs.core.ktx)
+    implementation(libs.activity.compose)
+    implementation(libs.material3.compose)
+    implementation(libs.navigation.compose)
+    implementation(libs.one.tap.compose)
+    implementation(libs.message.bar.compose)
+    implementation(libs.firebase.auth)
     implementation(libs.coroutines.core)
     implementation(libs.realm.sync)
-    implementation(libs.room.runtime)
-    implementation(libs.room.ktx)
-    ksp(libs.room.compiler)
 
+    implementation(project(":core:ui"))
     implementation(project(":core:util"))
 }

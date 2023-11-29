@@ -85,7 +85,7 @@ dependencies {
     implementation(project(":core:ui"))
     implementation(project(":core:util"))
     implementation(project(":data:mongo"))
-//    implementation(project(":feature:auth"))
+    implementation(project(":feature:auth"))
 //    implementation(project(":feature:home"))
 //    implementation(project(":feature:write"))
 }

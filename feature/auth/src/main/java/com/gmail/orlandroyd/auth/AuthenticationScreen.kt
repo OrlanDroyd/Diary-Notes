@@ -1,4 +1,4 @@
-package com.gmail.orlandroyd.diarynotes.presentation.screens.auth
+package com.gmail.orlandroyd.auth
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
