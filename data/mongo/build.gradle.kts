@@ -2,8 +2,8 @@
 plugins {
     alias(libs.plugins.com.android.library)
     alias(libs.plugins.org.jetbrains.kotlin.android)
-    id("io.realm.kotlin")
-    id("com.google.devtools.ksp")
+    alias(libs.plugins.io.realm.kotlin)
+    alias(libs.plugins.com.google.devtools.ksp)
 }
 
 android {

@@ -1,29 +1,17 @@
-package com.gmail.orlandroyd.diarynotes.presentation.screens.write
+package com.gmail.orlandroyd.write
 
 import android.annotation.SuppressLint
 import android.net.Uri
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.gestures.detectTransformGestures
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.pager.PagerState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material3.Button
-import androidx.compose.material3.Icon
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableFloatStateOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
@@ -38,39 +26,38 @@ import com.gmail.orlandroyd.ui.GalleryImage
 import com.gmail.orlandroyd.ui.GalleryState
 import com.gmail.orlandroyd.util.model.Diary
 import com.gmail.orlandroyd.util.model.Mood
-import com.google.accompanist.pager.ExperimentalPagerApi
-import com.google.accompanist.pager.PagerState
 import java.time.ZonedDateTime
 
-@OptIn(ExperimentalPagerApi::class)
+@OptIn(ExperimentalFoundationApi::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun WriteScreen(
+internal fun WriteScreen(
     uiState: UiState,
     pagerState: PagerState,
     galleryState: GalleryState,
     moodName: () -> String,
-    onBackPressed: () -> Unit,
+    onTitleChanged: (String) -> Unit,
+    onDescriptionChanged: (String) -> Unit,
     onDeleteConfirmed: () -> Unit,
-    onTitleChange: (String) -> Unit,
-    onDescriptionChange: (String) -> Unit,
-    onSaveClicked: (Diary) -> Unit,
     onDateTimeUpdated: (ZonedDateTime) -> Unit,
+    onBackPressed: () -> Unit,
+    onSaveClicked: (Diary) -> Unit,
     onImageSelect: (Uri) -> Unit,
     onImageDeleteClicked: (GalleryImage) -> Unit
 ) {
     var selectedGalleryImage by remember { mutableStateOf<GalleryImage?>(null) }
-    LaunchedEffect(uiState.mood) {
+    // Update the Mood when selecting an existing Diary
+    LaunchedEffect(key1 = uiState.mood) {
         pagerState.scrollToPage(Mood.valueOf(uiState.mood.name).ordinal)
     }
     Scaffold(
         topBar = {
             WriteTopBar(
+                selectedDiary = uiState.selectedDiary,
                 moodName = moodName,
-                onBackPressed = onBackPressed,
                 onDeleteConfirmed = onDeleteConfirmed,
-                onDateTimeUpdated = onDateTimeUpdated,
-                uiState = uiState
+                onBackPressed = onBackPressed,
+                onDateTimeUpdated = onDateTimeUpdated
             )
         },
         content = { paddingValues ->
@@ -78,8 +65,10 @@ fun WriteScreen(
                 uiState = uiState,
                 pagerState = pagerState,
                 galleryState = galleryState,
-                onTitleChange = onTitleChange,
-                onDescriptionChange = onDescriptionChange,
+                title = uiState.title,
+                onTitleChanged = onTitleChanged,
+                description = uiState.description,
+                onDescriptionChanged = onDescriptionChanged,
                 paddingValues = paddingValues,
                 onSaveClicked = onSaveClicked,
                 onImageSelect = onImageSelect,
@@ -106,7 +95,7 @@ fun WriteScreen(
 }
 
 @Composable
-fun ZoomableImage(
+internal fun ZoomableImage(
     selectedGalleryImage: GalleryImage,
     onCloseClicked: () -> Unit,
     onDeleteClicked: () -> Unit

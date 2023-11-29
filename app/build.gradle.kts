@@ -2,11 +2,10 @@
 plugins {
     alias(libs.plugins.com.android.application)
     alias(libs.plugins.org.jetbrains.kotlin.android)
-    id("kotlin-kapt")
-    id("dagger.hilt.android.plugin")
-    id("io.realm.kotlin")
+    alias(libs.plugins.com.google.devtools.ksp)
+    alias(libs.plugins.com.google.dagger.hilt.android)
+    alias(libs.plugins.io.realm.kotlin)
     id("com.google.gms.google-services")
-    id("com.google.devtools.ksp")
 }
 
 android {
@@ -58,34 +57,32 @@ android {
 
 dependencies {
 
-    // Compose Navigation
+    // Dependencies
     implementation(libs.navigation.compose)
-
-    // Firebase
     implementation(libs.firebase.storage)
-
-    // Room components
     implementation(libs.room.runtime)
     ksp(libs.room.compiler)
     implementation(libs.room.ktx)
-
-    // Splash API
     implementation(libs.splash.api)
-
-    // Mongo DB Realm
     implementation(libs.realm.sync)
-
-    // Dagger Hilt
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
-
-    // Desugar JDK
     coreLibraryDesugaring(libs.desugar.jdk)
 
+    // Test
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.junit.ext)
+    androidTestImplementation(libs.espresso.core)
+    androidTestImplementation(platform(libs.compose.bom))
+    androidTestImplementation(libs.ui.test.junit4)
+    androidTestImplementation(libs.ui.tooling)
+    androidTestImplementation(libs.ui.test.manifest)
+
+    // Modules
     implementation(project(":core:ui"))
     implementation(project(":core:util"))
     implementation(project(":data:mongo"))
     implementation(project(":feature:auth"))
     implementation(project(":feature:home"))
-//    implementation(project(":feature:write"))
+    implementation(project(":feature:write"))
 }

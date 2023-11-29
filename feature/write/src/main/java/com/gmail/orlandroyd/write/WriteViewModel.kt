@@ -1,7 +1,7 @@
-package com.gmail.orlandroyd.diarynotes.presentation.screens.write
+package com.gmail.orlandroyd.write
 
+import android.annotation.SuppressLint
 import android.net.Uri
-import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -21,9 +21,9 @@ import com.gmail.orlandroyd.util.model.Diary
 import com.gmail.orlandroyd.util.model.Mood
 import com.gmail.orlandroyd.util.model.RequestState
 import com.gmail.orlandroyd.util.toRealmInstant
-import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.auth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.realm.kotlin.types.RealmInstant
@@ -36,14 +36,12 @@ import java.time.ZonedDateTime
 import javax.inject.Inject
 
 @HiltViewModel
-class WriteViewModel @Inject constructor(
+internal class WriteViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
     private val imageToUploadDao: ImageToUploadDao,
-    private val imageToDeleteDao: ImageToDeleteDao,
+    private val imageToDeleteDao: ImageToDeleteDao
 ) : ViewModel() {
-
     val galleryState = GalleryState()
-
     var uiState by mutableStateOf(UiState())
         private set
 
@@ -62,19 +60,17 @@ class WriteViewModel @Inject constructor(
 
     private fun fetchSelectedDiary() {
         if (uiState.selectedDiaryId != null) {
-            viewModelScope.launch(Dispatchers.Main) {
-                MongoDB.getSelectedDiary(
-                    diaryId = ObjectId.invoke(uiState.selectedDiaryId!!)
-                )
+            viewModelScope.launch {
+                MongoDB.getSelectedDiary(diaryId = ObjectId.invoke(uiState.selectedDiaryId!!))
                     .catch {
                         emit(RequestState.Error(Exception("Diary is already deleted.")))
                     }
                     .collect { diary ->
                         if (diary is RequestState.Success) {
-                            setSelectedDiary(diary.data)
-                            setTitle(diary.data.title)
-                            setDescription(diary.data.description)
-                            setMood(Mood.valueOf(diary.data.mood))
+                            setMood(mood = Mood.valueOf(diary.data.mood))
+                            setSelectedDiary(diary = diary.data)
+                            setTitle(title = diary.data.title)
+                            setDescription(description = diary.data.description)
 
                             fetchImagesFromFirebase(
                                 remoteImagePaths = diary.data.images,
@@ -95,6 +91,10 @@ class WriteViewModel @Inject constructor(
         }
     }
 
+    private fun setSelectedDiary(diary: Diary) {
+        uiState = uiState.copy(selectedDiary = diary)
+    }
+
     fun setTitle(title: String) {
         uiState = uiState.copy(title = title)
     }
@@ -107,24 +107,21 @@ class WriteViewModel @Inject constructor(
         uiState = uiState.copy(mood = mood)
     }
 
-    private fun setSelectedDiary(diary: Diary) {
-        uiState = uiState.copy(selectedDiary = diary)
-    }
-
+    @SuppressLint("NewApi")
     fun updateDateTime(zonedDateTime: ZonedDateTime) {
         uiState = uiState.copy(updatedDateTime = zonedDateTime.toInstant().toRealmInstant())
     }
 
-    fun upsert(
+    fun upsertDiary(
         diary: Diary,
         onSuccess: () -> Unit,
-        onError: (String) -> Unit,
+        onError: (String) -> Unit
     ) {
         viewModelScope.launch(Dispatchers.IO) {
             if (uiState.selectedDiaryId != null) {
-                updateDiary(diary, onSuccess, onError)
+                updateDiary(diary = diary, onSuccess = onSuccess, onError = onError)
             } else {
-                insertDiary(diary, onSuccess, onError)
+                insertDiary(diary = diary, onSuccess = onSuccess, onError = onError)
             }
         }
     }
@@ -134,7 +131,7 @@ class WriteViewModel @Inject constructor(
         onSuccess: () -> Unit,
         onError: (String) -> Unit,
     ) {
-        val result = MongoDB.insertDiary(diary.apply {
+        val result = MongoDB.insertDiary(diary = diary.apply {
             if (uiState.updatedDateTime != null) {
                 date = uiState.updatedDateTime!!
             }
@@ -146,7 +143,7 @@ class WriteViewModel @Inject constructor(
             }
         } else if (result is RequestState.Error) {
             withContext(Dispatchers.Main) {
-                onError(result.error.message.orEmpty())
+                onError(result.error.message.toString())
             }
         }
     }
@@ -154,16 +151,15 @@ class WriteViewModel @Inject constructor(
     private suspend fun updateDiary(
         diary: Diary,
         onSuccess: () -> Unit,
-        onError: (String) -> Unit,
+        onError: (String) -> Unit
     ) {
-        val result = MongoDB.updateDiary(diary.apply {
+        val result = MongoDB.updateDiary(diary = diary.apply {
             _id = ObjectId.invoke(uiState.selectedDiaryId!!)
             date = if (uiState.updatedDateTime != null) {
                 uiState.updatedDateTime!!
             } else {
                 uiState.selectedDiary!!.date
             }
-
         })
         if (result is RequestState.Success) {
             uploadImagesToFirebase()
@@ -173,26 +169,28 @@ class WriteViewModel @Inject constructor(
             }
         } else if (result is RequestState.Error) {
             withContext(Dispatchers.Main) {
-                onError(result.error.message.orEmpty())
+                onError(result.error.message.toString())
             }
         }
     }
 
     fun deleteDiary(
         onSuccess: () -> Unit,
-        onError: (String) -> Unit,
+        onError: (String) -> Unit
     ) {
         viewModelScope.launch(Dispatchers.IO) {
             if (uiState.selectedDiaryId != null) {
-                val result = MongoDB.deleteDiary(ObjectId.invoke(uiState.selectedDiaryId!!))
+                val result = MongoDB.deleteDiary(diaryId = ObjectId.invoke(uiState.selectedDiaryId!!))
                 if (result is RequestState.Success) {
                     withContext(Dispatchers.Main) {
-                        uiState.selectedDiary?.let { deleteImagesFromFirebase(images = it.images) }
+                        uiState.selectedDiary?.let {
+                            deleteImagesFromFirebase(images = it.images)
+                        }
                         onSuccess()
                     }
                 } else if (result is RequestState.Error) {
                     withContext(Dispatchers.Main) {
-                        onError(result.error.message.orEmpty())
+                        onError(result.error.message.toString())
                     }
                 }
             }
@@ -200,11 +198,10 @@ class WriteViewModel @Inject constructor(
     }
 
     fun addImage(image: Uri, imageType: String) {
-        val remoteImagePath =
-            "images/${FirebaseAuth.getInstance().currentUser?.uid}/${image.lastPathSegment}-${System.currentTimeMillis()}.$imageType"
-        Log.d("DEBUG-MSG", "${this::class.java.simpleName}: remoteImagePath -> $remoteImagePath")
+        val remoteImagePath = "images/${FirebaseAuth.getInstance().currentUser?.uid}/" +
+                "${image.lastPathSegment}-${System.currentTimeMillis()}.$imageType"
         galleryState.addImage(
-            galleryImage = GalleryImage(
+            GalleryImage(
                 image = image,
                 remoteImagePath = remoteImagePath
             )
@@ -241,9 +238,7 @@ class WriteViewModel @Inject constructor(
                     .addOnFailureListener {
                         viewModelScope.launch(Dispatchers.IO) {
                             imageToDeleteDao.addImageToDelete(
-                                ImageToDelete(
-                                    remoteImagePath = remotePath
-                                )
+                                ImageToDelete(remoteImagePath = remotePath)
                             )
                         }
                     }
@@ -254,9 +249,7 @@ class WriteViewModel @Inject constructor(
                     .addOnFailureListener {
                         viewModelScope.launch(Dispatchers.IO) {
                             imageToDeleteDao.addImageToDelete(
-                                ImageToDelete(
-                                    remoteImagePath = remotePath
-                                )
+                                ImageToDelete(remoteImagePath = remotePath)
                             )
                         }
                     }
@@ -272,7 +265,7 @@ class WriteViewModel @Inject constructor(
 
 }
 
-data class UiState(
+internal data class UiState(
     val selectedDiaryId: String? = null,
     val selectedDiary: Diary? = null,
     val title: String = "",

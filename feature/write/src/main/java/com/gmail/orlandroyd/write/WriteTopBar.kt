@@ -1,6 +1,6 @@
-package com.gmail.orlandroyd.diarynotes.presentation.screens.write
+package com.gmail.orlandroyd.write
 
-import android.icu.text.SimpleDateFormat
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.Icons
@@ -8,27 +8,12 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.MoreVert
-import androidx.compose.material3.CenterAlignedTopAppBar
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import com.gmail.orlandroyd.diarynotes.R
 import com.gmail.orlandroyd.ui.components.DisplayAlertDialog
 import com.gmail.orlandroyd.util.model.Diary
 import com.gmail.orlandroyd.util.toInstant
@@ -43,55 +28,54 @@ import java.time.LocalTime
 import java.time.ZoneId
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
-import java.util.Date
-import java.util.Locale
+import java.util.*
 
+@SuppressLint("NewApi")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun WriteTopBar(
+internal fun WriteTopBar(
+    selectedDiary: Diary?,
     moodName: () -> String,
     onDateTimeUpdated: (ZonedDateTime) -> Unit,
-    onBackPressed: () -> Unit,
     onDeleteConfirmed: () -> Unit,
-    uiState: UiState
+    onBackPressed: () -> Unit
 ) {
-    val context = LocalContext.current
     var currentDate by remember { mutableStateOf(LocalDate.now()) }
     var currentTime by remember { mutableStateOf(LocalTime.now()) }
     val dateDialog = rememberSheetState()
     val timeDialog = rememberSheetState()
-    val formattedDate = remember(currentDate) {
-        DateTimeFormatter.ofPattern("dd MMM yyyy").format(currentDate).uppercase()
+    val formattedDate = remember(key1 = currentDate) {
+        DateTimeFormatter
+            .ofPattern("dd MMM yyyy")
+            .format(currentDate).uppercase()
     }
-    val formattedTime = remember(currentTime) {
-        DateTimeFormatter.ofPattern("hh:mm a").format(currentTime).uppercase()
+    val formattedTime = remember(key1 = currentTime) {
+        DateTimeFormatter
+            .ofPattern("hh:mm a")
+            .format(currentTime).uppercase()
     }
-    val selectedDiaryDateTime = remember(uiState.selectedDiary) {
-        if (uiState.selectedDiary != null) {
-            SimpleDateFormat(
-                "dd MMM yyyy, hh:mm a",
-                Locale.getDefault()
-            ).format(Date.from(uiState.selectedDiary.date.toInstant())).uppercase()
-        } else {
-            context.getString(R.string.unknown)
-        }
+    var dateTimeUpdated by remember { mutableStateOf(false) }
+    val selectedDiaryDateTime = remember(selectedDiary) {
+        if (selectedDiary != null) {
+            DateTimeFormatter.ofPattern("dd MMM yyyy, hh:mm a", Locale.getDefault())
+                .withZone(ZoneId.systemDefault())
+                .format(selectedDiary.date.toInstant())
+        } else "Unknown"
     }
-    var dateTimeUpdated by rememberSaveable { mutableStateOf(false) }
-
     CenterAlignedTopAppBar(
         navigationIcon = {
             IconButton(onClick = onBackPressed) {
                 Icon(
                     imageVector = Icons.Default.ArrowBack,
-                    contentDescription = stringResource(R.string.back_arrow_icon)
+                    contentDescription = "Back Arrow Icon"
                 )
             }
         },
         title = {
             Column {
                 Text(
-                    text = moodName(),
                     modifier = Modifier.fillMaxWidth(),
+                    text = moodName(),
                     style = TextStyle(
                         fontSize = MaterialTheme.typography.titleLarge.fontSize,
                         fontWeight = FontWeight.Bold
@@ -99,14 +83,11 @@ fun WriteTopBar(
                     textAlign = TextAlign.Center
                 )
                 Text(
-                    text = if (uiState.selectedDiary != null && dateTimeUpdated)
-                        "$formattedDate, $formattedTime"
-                    else if (uiState.selectedDiary != null) selectedDiaryDateTime
-                    else "$formattedDate, $formattedTime",
                     modifier = Modifier.fillMaxWidth(),
-                    style = TextStyle(
-                        fontSize = MaterialTheme.typography.bodySmall.fontSize
-                    ),
+                    text = if (selectedDiary != null && dateTimeUpdated) "$formattedDate, $formattedTime"
+                    else if (selectedDiary != null) selectedDiaryDateTime
+                    else "$formattedDate, $formattedTime",
+                    style = TextStyle(fontSize = MaterialTheme.typography.bodySmall.fontSize),
                     textAlign = TextAlign.Center
                 )
             }
@@ -127,7 +108,7 @@ fun WriteTopBar(
                 }) {
                     Icon(
                         imageVector = Icons.Default.Close,
-                        contentDescription = stringResource(R.string.close_icon),
+                        contentDescription = "Close Icon",
                         tint = MaterialTheme.colorScheme.onSurface
                     )
                 }
@@ -135,14 +116,14 @@ fun WriteTopBar(
                 IconButton(onClick = { dateDialog.show() }) {
                     Icon(
                         imageVector = Icons.Default.DateRange,
-                        contentDescription = stringResource(R.string.date_icon),
+                        contentDescription = "Date Icon",
                         tint = MaterialTheme.colorScheme.onSurface
                     )
                 }
             }
-            if (uiState.selectedDiary != null) {
+            if (selectedDiary != null) {
                 DeleteDiaryAction(
-                    selectedDiary = uiState.selectedDiary,
+                    selectedDiary = selectedDiary,
                     onDeleteConfirmed = onDeleteConfirmed
                 )
             }
@@ -175,7 +156,7 @@ fun WriteTopBar(
 }
 
 @Composable
-fun DeleteDiaryAction(
+internal fun DeleteDiaryAction(
     selectedDiary: Diary?,
     onDeleteConfirmed: () -> Unit
 ) {
@@ -195,11 +176,8 @@ fun DeleteDiaryAction(
         )
     }
     DisplayAlertDialog(
-        title = stringResource(R.string.delete),
-        message = stringResource(
-            R.string.are_you_sure_you_want_to_permanently_delete_this_diary_note,
-            selectedDiary?.title.orEmpty()
-        ),
+        title = "Delete",
+        message = "Are you sure you want to permanently delete this diary note '${selectedDiary?.title}'?",
         dialogOpened = openDialog,
         onDialogClosed = { openDialog = false },
         onYesClicked = onDeleteConfirmed

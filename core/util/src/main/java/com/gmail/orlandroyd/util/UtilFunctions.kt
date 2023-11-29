@@ -1,12 +1,9 @@
 package com.gmail.orlandroyd.util
 
+import android.annotation.SuppressLint
 import android.net.Uri
 import android.util.Log
-import androidx.core.net.toUri
-import com.gmail.orlandroyd.mongo.database.entity.ImageToDelete
-import com.gmail.orlandroyd.mongo.database.entity.ImageToUpload
 import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.storageMetadata
 import io.realm.kotlin.types.RealmInstant
 import java.time.Instant
 
@@ -38,27 +35,7 @@ fun fetchImagesFromFirebase(
     }
 }
 
-fun retryUploadingImageToFirebase(
-    imageToUpload: ImageToUpload,
-    onSuccess: () -> Unit
-) {
-    val storage = FirebaseStorage.getInstance().reference
-    storage.child(imageToUpload.remoteImagePath).putFile(
-        imageToUpload.imageUri.toUri(),
-        storageMetadata { },
-        imageToUpload.sessionUri.toUri()
-    ).addOnSuccessListener { onSuccess() }
-}
-
-fun retryDeletingImageFromFirebase(
-    imageToDelete: ImageToDelete,
-    onSuccess: () -> Unit
-) {
-    val storage = FirebaseStorage.getInstance().reference
-    storage.child(imageToDelete.remoteImagePath).delete()
-        .addOnSuccessListener { onSuccess() }
-}
-
+@SuppressLint("NewApi")
 fun RealmInstant.toInstant(): Instant {
     val sec: Long = this.epochSeconds
     val nano: Int = this.nanosecondsOfSecond
@@ -69,6 +46,7 @@ fun RealmInstant.toInstant(): Instant {
     }
 }
 
+@SuppressLint("NewApi")
 fun Instant.toRealmInstant(): RealmInstant {
     val sec: Long = this.epochSecond
     val nano: Int = this.nano

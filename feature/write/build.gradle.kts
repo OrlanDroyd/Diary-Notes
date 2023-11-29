@@ -8,7 +8,7 @@ plugins {
 }
 
 android {
-    namespace = "com.gmail.orlandroyd.home"
+    namespace = "com.gmail.orlandroyd.write"
     compileSdk = ProjectConfig.compileSdk
 
     defaultConfig {
@@ -52,14 +52,15 @@ dependencies {
     implementation(libs.activity.compose)
     implementation(libs.material3.compose)
     implementation(libs.navigation.compose)
+    implementation(libs.coil)
     implementation(libs.coroutines.core)
     implementation(libs.realm.sync)
+    implementation(libs.date.time.picker)
+    implementation(libs.date.dialog)
+    implementation(libs.time.dialog)
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
     implementation(libs.hilt.navigation.compose)
-    implementation(libs.ui.tooling.preview)
-    implementation(libs.date.time.picker)
-    implementation(libs.date.dialog)
     implementation(libs.firebase.auth)
     implementation(libs.firebase.storage)
 

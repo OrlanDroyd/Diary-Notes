@@ -1,7 +1,8 @@
+@Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
 plugins {
-    id("com.android.application")
-    id("org.jetbrains.kotlin.android")
-    id("io.realm.kotlin")
+    alias(libs.plugins.com.android.library)
+    alias(libs.plugins.org.jetbrains.kotlin.android)
+    alias(libs.plugins.io.realm.kotlin)
 }
 
 android {
@@ -57,5 +58,4 @@ dependencies {
     implementation(libs.coil)
 
     implementation(project(":core:ui"))
-    implementation(project(":data:mongo"))
 }

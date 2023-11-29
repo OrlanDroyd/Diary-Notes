@@ -19,8 +19,6 @@ kotlin-coroutines-core = "1.7.1"
 dagger-hilt = "2.48"
 hilt-navigation-compose = "1.0.0"
 coil = "2.3.0"
-# [DEPRECATED]
-#accompanist = "0.27.0"
 date-time-picker = "1.0.2"
 message-bar-compose = "1.0.5"
 one-tap-compose = "1.0.7"
@@ -30,7 +28,8 @@ org-jetbrains-kotlin-android = "1.8.20"
 appcompat = "1.6.1"
 material = "1.10.0"
 io-realm-kotlin = "1.10.0"
-com-google-dagger-hilt-android = "2.44"
+com-google-dagger-hilt-android = "2.48"
+com-google-devtools-ksp = "1.8.20-1.0.11"
 
 [libraries]
 compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "compose-bom" }
@@ -40,6 +39,9 @@ ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview"}
 material3 = { module = "androidx.compose.material3:material3"}
 foundation = { module = "androidx.compose.foundation:foundation"}
 foundation-layout = { module = "androidx.compose.foundation:foundation-layout"}
+ui-test-junit4 = { module = "androidx.compose.ui:ui-test-junit4"}
+ui-tooling = { module = "androidx.compose.ui:ui-tooling"}
+ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest"}
 core-ktx = { module = "androidx.core:core-ktx", version.ref = "core-ktx"}
 lifecycle-runtime = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "lifecycle-runtime"}
 activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activity-compose"}
@@ -62,8 +64,6 @@ hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "dagge
 hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "dagger-hilt"}
 hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hilt-navigation-compose"}
 coil = { module = "io.coil-kt:coil-compose", version.ref = "coil"}
-# [DEPRECATED]
-#accompanist-pager = { module = "com.google.accompanist:accompanist-pager", version.ref = "accompanist"}
 date-time-picker = { module = "com.maxkeppeler.sheets-compose-dialogs:core", version.ref = "date-time-picker"}
 date-dialog = { module = "com.maxkeppeler.sheets-compose-dialogs:calendar", version.ref = "date-time-picker"}
 time-dialog = { module = "com.maxkeppeler.sheets-compose-dialogs:clock", version.ref = "date-time-picker"}
@@ -80,3 +80,4 @@ org-jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.re
 org-jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "org-jetbrains-kotlin-android" }
 io-realm-kotlin = { id = "io.realm.kotlin", version.ref = "io-realm-kotlin" }
 com-google-dagger-hilt-android = { id = "com.google.dagger.hilt.android", version.ref = "com-google-dagger-hilt-android" }
+com-google-devtools-ksp = { id = "com.google.devtools.ksp", version.ref = "com-google-devtools-ksp" }

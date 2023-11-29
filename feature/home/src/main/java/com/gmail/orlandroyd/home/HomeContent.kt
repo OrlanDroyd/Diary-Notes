@@ -1,7 +1,6 @@
 package com.gmail.orlandroyd.home
 
-import android.os.Build
-import androidx.annotation.RequiresApi
+import android.annotation.SuppressLint
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -32,7 +31,7 @@ import java.time.LocalDate
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun HomeContent(
+internal fun HomeContent(
     paddingValues: PaddingValues,
     diaryNotes: Map<LocalDate, List<Diary>>,
     onClick: (String) -> Unit
@@ -61,9 +60,9 @@ fun HomeContent(
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
+@SuppressLint("NewApi")
 @Composable
-fun DateHeader(localDate: LocalDate) {
+internal fun DateHeader(localDate: LocalDate) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -110,7 +109,7 @@ fun DateHeader(localDate: LocalDate) {
 }
 
 @Composable
-fun EmptyPage(
+internal fun EmptyPage(
     title: String = stringResource(com.gmail.orlandroyd.ui.R.string.empty_diary),
     subtitle: String = stringResource(com.gmail.orlandroyd.ui.R.string.write_something)
 ) {
@@ -138,9 +137,9 @@ fun EmptyPage(
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
+@SuppressLint("NewApi")
 @Preview(showBackground = true)
 @Composable
-fun DateHeaderPreview() {
+internal fun DateHeaderPreview() {
     DateHeader(localDate = LocalDate.now())
 }

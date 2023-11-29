@@ -1,7 +1,6 @@
 package com.gmail.orlandroyd.home
 
-import android.os.Build
-import androidx.annotation.RequiresApi
+import android.annotation.SuppressLint
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.DateRange
@@ -23,10 +22,10 @@ import java.time.LocalTime
 import java.time.ZoneId
 import java.time.ZonedDateTime
 
-@RequiresApi(Build.VERSION_CODES.O)
+@SuppressLint("NewApi")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeTopBar(
+internal fun HomeTopBar(
     scrollBehavior: TopAppBarScrollBehavior,
     onMenuClicked: () -> Unit,
     dateIsSelected: Boolean,
