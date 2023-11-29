@@ -1,7 +1,7 @@
 package com.gmail.orlandroyd.diarynotes.di
 
 import android.content.Context
-import com.gmail.orlandroyd.diarynotes.connectivity.NetworkConnectivityObserver
+import com.gmail.orlandroyd.util.connectivity.NetworkConnectivityObserver
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
